@@ -89,7 +89,7 @@ export function PaintBackground() {
         const next = createStroke(random, `stroke-${++sequence.current}`);
         setStrokes((current) => current.length < MAX_ACTIVE_STROKES ? [...current, next] : current);
         schedule();
-      }, first ? 1200 + random() * 600 : 2800 + random() * 2000);
+      }, first ? 0 : 2800 + random() * 2000);
     }
 
     schedule(true);

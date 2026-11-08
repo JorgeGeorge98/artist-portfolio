@@ -38,7 +38,7 @@ export function createStroke(random: () => number, id: string): BrushStroke {
     width: 14 + random() * 12,
     angle: -80 + random() * 160,
     mirrored: random() > 0.5,
-    opacity: 0.65 + random() * 0.25,
+    opacity: 0.7 + random() * 0.25,
     hue: texture === "teal" ? -12 + random() * 32 : -8 + random() * 14,
     hueDrift: 7 + random() * 7,
     colorDuration: 30 + random() * 15,

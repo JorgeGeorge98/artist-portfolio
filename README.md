@@ -23,6 +23,9 @@ npm run build
 - `app/globals.css`: design tokens, responsive composition, and reduced-motion styles.
 - `public/textures/canvas-weave.svg`: lightweight, seamless linen weave and fine grain beneath the paint; the texture is static and does not cover artwork or text.
 - `components/artwork-gallery.tsx`: gallery and native modal artwork viewer. Supports Escape, arrow keys, focus containment, and return focus.
+- `components/gallery-scene.tsx`: loads the 3D gallery only when the artwork dialog opens, with a normal-image fallback when WebGL 2 is unavailable.
+- `public/textures/gallery-quartz.webp`: generated ivory quartz-look porcelain for the 3D walls, with physically lit grain, mineral roughness variation, and a satin finish. Provenance and prompt: `docs/gallery-materials.md`.
+- `lib/gallery-room.ts`: Three.js room, individual spotlights, frame shadows, and a camera that pans between paintings. Images retain their original aspect ratios and relative pixel sizes (200 image pixels per scene unit); these mockup sizes are not real artwork dimensions. Reduced motion switches views immediately. Rendering runs on demand and GPU resources are disposed when the viewer closes.
 - `components/reveal.tsx`: progressive scroll animation using IntersectionObserver and the Web Animations API. Content is readable without JavaScript; reduced-motion preferences are respected.
 - `components/painted-text.tsx`: desktop hover/focus pigment effects; on touch devices the logo sweeps once on arrival and headings sweep once as they enter view. Touch links and cards have immediate press feedback. Reduced motion disables automatic sweeps and retains static press colors.
 - `components/use-touch-input.ts`: detects hover/pointer capability, including tablets, rather than relying on viewport width.

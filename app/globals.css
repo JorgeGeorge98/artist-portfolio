@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f5f3eb;
-  --ink: #263e34;
-  --muted: #687168;
-  --line: #d6d8cc;
-  --accent: #a94f35;
-  --forest: #223e34;
-  --lime: #dce48b;
+  --paper: #f8f3e4;
+  --ink: #192f43;
+  --muted: #536466;
+  --line: #d2d3bf;
+  --accent: #b24627;
+  --forest: #163c3b;
+  --lime: #e2e671;
 }
 
 @theme inline {
@@ -23,7 +23,7 @@
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: 32px; }
-body { isolation: isolate; background: var(--paper); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+body { isolation: isolate; background-color: var(--paper); background-image: url('/textures/canvas-weave.svg'); background-size: 192px 192px; color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
 ::selection { background: var(--lime); color: var(--forest); }
 button, a { -webkit-tap-highlight-color: transparent; }
 button { cursor: pointer; }
@@ -34,20 +34,20 @@ a, button { touch-action: manipulation; }
 .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; line-height: 1.6; }
 .artist-logo { font-family: var(--font-display); font-size: 34px; letter-spacing: -.015em; white-space: nowrap; }
 
-/* Decorative pigment stays behind the content and feathers into the ivory. */
-.paint-edges { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: clip; }
-.paint-edge { position: absolute; top: -5%; bottom: -5%; width: clamp(110px, 13vw, 230px); opacity: .5; mask-image: linear-gradient(to right, #000 0%, #0009 38%, transparent 94%); }
-.paint-edge-left { left: -18px; }
-.paint-edge-right { right: -18px; transform: rotate(180deg); opacity: .44; }
-.paint-edge-pigment { width: 100%; height: 100%; background-image: linear-gradient(165deg, #217b87 0%, #224b8b 16%, #6b9a53 32%, #d8c443 48%, #399a91 64%, #ac593b 80%, #226d89 100%); background-size: 180% 200%; mask-image: url('/textures/paint-strokes.svg'); mask-size: 100% 100%; mask-repeat: no-repeat; }
+/* Paint can appear anywhere; a horizontal opacity mask protects central content. */
+.paint-background { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: clip; mask-image: linear-gradient(to right, #000 0%, #000b 12%, #0004 28%, #0004 72%, #000b 88%, #000 100%); }
+.paint-stroke { position: absolute; aspect-ratio: 2 / 3; transform-origin: center; }
+.paint-stroke-reveal, .paint-stroke-texture { position: absolute; inset: 0; }
+.paint-stroke-reveal { mask-image: linear-gradient(to bottom, #000 0%, #000 45.5%, transparent 50%, transparent 100%); mask-size: 100% 220%; mask-repeat: no-repeat; }
+.paint-stroke-texture { background-size: 100% 100%; background-repeat: no-repeat; }
 
 /* The second copy is decorative, so text is announced only once. */
-.painted-text { position: relative; }
+.painted-text { position: relative; transform-origin: left center; }
 .painted-text-base { display: block; }
-.painted-text-pigment { position: absolute; inset: 0; pointer-events: none; opacity: 0; background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, #263e34 0%, #23787d 18%, #294888 35%, #8a742a 52%, #a94f35 69%, #267a73 85%, #263e34 100%); background-size: 160px 160px, 280% 100%; background-blend-mode: multiply; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
+.painted-text-pigment { position: absolute; inset: 0; pointer-events: none; opacity: 0; background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, #183dc5 0%, #007c89 16%, #a37505 32%, #c13f2e 48%, #26733e 64%, #2449ce 82%, #007c89 100%); background-size: 160px 160px, 190% 100%; background-blend-mode: multiply; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; }
 .painted-text-pigment * { color: transparent !important; -webkit-text-fill-color: transparent; }
-.painted-text-light .painted-text-pigment { background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, #f5f3eb 0%, #a8ddd4 20%, #b4c9f1 38%, #e3e894 55%, #eab793 73%, #b6dfce 88%, #f5f3eb 100%); background-blend-mode: soft-light; }
-@media (forced-colors: active) { .painted-text-pigment, .paint-edges { display: none; } }
+.painted-text-light .painted-text-pigment { background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, #f9e46a 0%, #76ddd6 18%, #bbc7ff 36%, #ffb692 54%, #e2ed80 72%, #76ddd6 87%, #f9e46a 100%); background-blend-mode: soft-light; }
+@media (forced-colors: active) { body { background-image: none; } .painted-text-pigment, .paint-background { display: none; } }
 .nav-link { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding-block: 12px; }
 .nav-link::after { content: ""; position: absolute; bottom: 6px; left: 0; height: 1px; width: 100%; background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .25s; }
 .nav-link:hover::after, .nav-link:focus-visible::after { transform: scaleX(1); }
@@ -108,9 +108,7 @@ a, button { touch-action: manipulation; }
   .site-shell { width: calc(100% - 40px); }
   header.site-shell { min-height: 82px; gap: 12px; }
   .artist-logo { font-size: 28px; }
-  .paint-edge { width: 80px; opacity: .32; }
-  .paint-edge-left { left: -22px; }
-  .paint-edge-right { right: -22px; }
+  .paint-background { mask-image: linear-gradient(to right, #000a 0%, #0003 22%, #0003 78%, #000a 100%); }
   .hero-topline { padding-block: 24px; }
   .hero-composition { grid-template-columns: 1fr; gap: 48px; padding-block: 18px 30px; }
   .hero-title { font-size: clamp(72px, 16vw, 112px); }
@@ -145,6 +143,7 @@ a, button { touch-action: manipulation; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .artwork-button:hover .artwork-image, .artwork-button:focus-visible .artwork-image { transform: none; }
-  .paint-edge-pigment { transform: none !important; background-position: 25% 35% !important; }
+  .paint-stroke-reveal { mask-position: 0% 0% !important; }
   .painted-text-pigment { background-position: 0% 50% !important; }
+  .painted-text { transform: none !important; }
 }

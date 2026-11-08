@@ -2,7 +2,7 @@
   <filter id="grain">
     <feTurbulence type="fractalNoise" baseFrequency=".4 .075" numOctaves="3" stitchTiles="stitch"/>
     <feColorMatrix type="saturate" values="0"/>
-    <feComponentTransfer><feFuncR type="linear" slope=".45" intercept=".55"/><feFuncG type="linear" slope=".45" intercept=".55"/><feFuncB type="linear" slope=".45" intercept=".55"/></feComponentTransfer>
+    <feComponentTransfer><feFuncR type="linear" slope=".22" intercept=".78"/><feFuncG type="linear" slope=".22" intercept=".78"/><feFuncB type="linear" slope=".22" intercept=".78"/></feComponentTransfer>
   </filter>
   <path fill="white" filter="url(#grain)" d="M0 0h160v160H0z"/>
 </svg>

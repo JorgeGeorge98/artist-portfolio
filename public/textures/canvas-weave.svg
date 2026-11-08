@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 192 192">
+  <defs>
+    <pattern id="linen" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M1.5 0v6M4.5 0v6" stroke="#8b7b5f" stroke-opacity=".095" stroke-width="1.1"/>
+      <path d="M0 1.5h6M0 4.5h6" stroke="#fffefa" stroke-opacity=".48" stroke-width="1.1"/>
+      <path d="M1.5 0v3M4.5 3v3" stroke="#fffdf5" stroke-opacity=".4" stroke-width=".8"/>
+      <path d="M0 4.9h3M3 1.9h3" stroke="#82745c" stroke-opacity=".065" stroke-width=".65"/>
+    </pattern>
+    <filter id="fiber" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".72" numOctaves="3" seed="17" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <path fill="url(#linen)" d="M0 0h192v192H0z"/>
+  <path fill="#91826a" opacity=".045" filter="url(#fiber)" d="M0 0h192v192H0z"/>
+</svg>

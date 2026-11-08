@@ -3,7 +3,7 @@ import { Arrow } from "@/components/arrow";
 import { ArtworkGallery } from "@/components/artwork-gallery";
 import { Reveal } from "@/components/reveal";
 import { artworks } from "@/content/artworks";
-import { PaintEdges } from "@/components/paint-edges";
+import { PaintBackground } from "@/components/paint-background";
 import { PaintedText } from "@/components/painted-text";
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <>
-      <PaintEdges />
+      <PaintBackground />
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-shell flex min-h-25 items-center justify-between gap-6 border-b border-line">
         <PaintedText as="a" href="#" className="artist-logo" aria-label="Daniela Salem, home">Daniela Salem<span className="ml-1 text-accent">.</span></PaintedText>

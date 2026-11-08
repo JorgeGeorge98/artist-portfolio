@@ -21,10 +21,13 @@ npm run build
 
 - `app/page.tsx`: homepage, navigation, introduction, and contact/footer.
 - `app/globals.css`: design tokens, responsive composition, and reduced-motion styles.
+- `public/textures/canvas-weave.svg`: lightweight, seamless linen weave and fine grain beneath the paint; the texture is static and does not cover artwork or text.
 - `components/artwork-gallery.tsx`: gallery and native modal artwork viewer. Supports Escape, arrow keys, focus containment, and return focus.
 - `components/reveal.tsx`: progressive scroll animation using IntersectionObserver and the Web Animations API. Content is readable without JavaScript; reduced-motion preferences are respected.
 - `components/painted-text.tsx`: shared Motion hover/focus pigment effect for the wordmark and headings, with a lighter palette on dark backgrounds.
-- `components/paint-edges.tsx`: slowly shifting edge pigments, masked by local SVG brush textures in `public/textures/`. Decorative layers cannot intercept clicks.
+- `components/paint-background.tsx`: starts empty, then paints randomized textures across the background. Each stroke shifts color, rests, and fades out on its own timer. The center is more transparent to protect readability. Timers and animation pause in hidden tabs and under reduced motion; decorative layers cannot intercept clicks.
+- `lib/paint-strokes.ts`: per-visit RNG, full-background placement, stroke lifetimes, and a six-active-stroke limit (plus briefly fading layers).
+- `docs/paint-textures.md`: texture provenance, generation prompts, and animation tuning notes.
 - `content/artworks.ts`: typed artwork catalogue, actual source dimensions, and descriptive alternative text.
 
 ## Artwork assets

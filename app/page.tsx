@@ -5,6 +5,7 @@ import { Reveal } from "@/components/reveal";
 import { artworks } from "@/content/artworks";
 import { PaintBackground } from "@/components/paint-background";
 import { PaintedText } from "@/components/painted-text";
+import { TouchFeedback } from "@/components/touch-feedback";
 
 export default function Home() {
   const featured = artworks[0];
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <>
       <PaintBackground />
+      <TouchFeedback />
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-shell flex min-h-25 items-center justify-between gap-6 border-b border-line">
         <PaintedText as="a" href="#" className="artist-logo" aria-label="Daniela Salem, home">Daniela Salem<span className="ml-1 text-accent">.</span></PaintedText>
@@ -28,7 +30,7 @@ export default function Home() {
           </div>
           <div className="hero-composition">
             <div className="hero-copy relative z-10">
-              <PaintedText as="h1" id="hero-title" className="hero-title font-display">Between<br />feeling<br /><span className="whitespace-nowrap">&amp; <em>colour.</em></span></PaintedText>
+              <PaintedText as="h1" id="hero-title" className="hero-title font-display" mobileDelay={0.5}>Between<br />feelings<br /><span className="whitespace-nowrap">&amp; <em>colour.</em></span></PaintedText>
               <p className="mt-8 max-w-70 text-sm leading-7 text-muted">Paintings by Daniela Salem.<br />An exploration of the world within,<br className="hidden sm:block" /> and the colour all around us.</p>
               <a className="text-link mt-7 inline-flex min-h-11 items-center gap-7 border-b border-ink pb-2 text-sm" href="#work">Explore the paintings <Arrow /></a>
             </div>

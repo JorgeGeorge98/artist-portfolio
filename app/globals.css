@@ -93,6 +93,19 @@ a, button { touch-action: manipulation; }
 .viewer-control:hover { background: var(--lime); }
 @keyframes enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+@media (hover: none), (pointer: coarse) {
+  /* Touch actions remain immediate; feedback only lasts for the press. */
+  .text-link:hover, .about-section .text-link:hover { color: inherit; }
+  .nav-link:hover::after { transform: scaleX(0); }
+  .artwork-button:hover .artwork-image { transform: none; box-shadow: none; }
+  .nav-link:is(:active, [data-pressed]), .text-link:is(:active, [data-pressed]) { color: var(--accent); }
+  .about-section .text-link:is(:active, [data-pressed]) { color: var(--lime); }
+  .nav-link:is(:active, [data-pressed])::after, .nav-link:focus-visible::after { transform: scaleX(1); }
+  .artwork-button:is(:active, [data-pressed]) .artwork-image { transform: scale(0.985); transition-duration: 100ms; }
+  .artwork-button:is(:active, [data-pressed]) .artwork-mat { background: #dce3d6; }
+  .viewer-control:is(:active, [data-pressed]) { background: var(--lime); }
+}
+
 @media (min-width: 1600px) { .hero-composition { padding-block: 55px 80px; } }
 @media (max-width: 1023px) {
   .site-shell { width: calc(100% - 64px); }
@@ -143,6 +156,7 @@ a, button { touch-action: manipulation; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
   .artwork-button:hover .artwork-image, .artwork-button:focus-visible .artwork-image { transform: none; }
+  .artwork-button:is(:active, [data-pressed]) .artwork-image { transform: none; }
   .paint-stroke-reveal { mask-position: 0% 0% !important; }
   .painted-text-pigment { background-position: 0% 50% !important; }
   .painted-text { transform: none !important; }

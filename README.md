@@ -24,7 +24,9 @@ npm run build
 - `public/textures/canvas-weave.svg`: lightweight, seamless linen weave and fine grain beneath the paint; the texture is static and does not cover artwork or text.
 - `components/artwork-gallery.tsx`: gallery and native modal artwork viewer. Supports Escape, arrow keys, focus containment, and return focus.
 - `components/reveal.tsx`: progressive scroll animation using IntersectionObserver and the Web Animations API. Content is readable without JavaScript; reduced-motion preferences are respected.
-- `components/painted-text.tsx`: shared Motion hover/focus pigment effect for the wordmark and headings, with a lighter palette on dark backgrounds.
+- `components/painted-text.tsx`: desktop hover/focus pigment effects; on touch devices the logo sweeps once on arrival and headings sweep once as they enter view. Touch links and cards have immediate press feedback. Reduced motion disables automatic sweeps and retains static press colors.
+- `components/use-touch-input.ts`: detects hover/pointer capability, including tablets, rather than relying on viewport width.
+- `components/touch-feedback.tsx`: passive pointer feedback for touch controls, cleared on release, cancellation, or scroll without delaying their actions.
 - `components/paint-background.tsx`: starts empty, then paints randomized textures across the background. Each stroke shifts color, rests, and fades out on its own timer. The center is more transparent to protect readability. Timers and animation pause in hidden tabs and under reduced motion; decorative layers cannot intercept clicks.
 - `lib/paint-strokes.ts`: per-visit RNG, full-background placement, stroke lifetimes, and a six-active-stroke limit (plus briefly fading layers).
 - `docs/paint-textures.md`: texture provenance, generation prompts, and animation tuning notes.

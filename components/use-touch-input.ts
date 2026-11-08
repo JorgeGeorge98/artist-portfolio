@@ -1,0 +1,15 @@
+"use client";
+
+import { useSyncExternalStore } from "react";
+
+const query = "(hover: none), (pointer: coarse)";
+
+function subscribe(onChange: () => void) {
+  const preference = window.matchMedia(query);
+  preference.addEventListener("change", onChange);
+  return () => preference.removeEventListener("change", onChange);
+}
+
+export function useTouchInput() {
+  return useSyncExternalStore(subscribe, () => window.matchMedia(query).matches, () => false);
+}

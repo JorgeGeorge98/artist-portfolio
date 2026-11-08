@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Daniela Salem — portfolio prototype
 
-## Getting Started
+A responsive contemporary painting portfolio built with Next.js App Router, TypeScript, and Tailwind CSS 4.
 
-First, run the development server:
+## Local development
 
-```bash
+```sh
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the local address printed by Next.js (normally http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```sh
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Structure
 
-## Learn More
+- `app/page.tsx`: homepage, navigation, introduction, and contact/footer.
+- `app/globals.css`: design tokens, responsive composition, and reduced-motion styles.
+- `components/artwork-gallery.tsx`: gallery and native modal artwork viewer. Supports Escape, arrow keys, focus containment, and return focus.
+- `components/reveal.tsx`: progressive scroll animation using IntersectionObserver and the Web Animations API. Content is readable without JavaScript; reduced-motion preferences are respected.
+- `content/artworks.ts`: typed artwork catalogue, actual source dimensions, and descriptive alternative text.
 
-To learn more about Next.js, take a look at the following resources:
+## Artwork assets
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The supplied assets are in `public/artworks/`, rather than `public/images/artworks/`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Filename | Pixel dimensions |
+| --- | --- |
+| `ojo.png` | 452 × 310 |
+| `mujer.png` | 190 × 287 |
+| `panteon.png` | 382 × 290 |
 
-## Deploy on Vercel
+All artwork uses `next/image` with its original aspect ratio and no cropping. Higher-resolution originals are recommended before launch. Working display titles follow the filenames; themes and introductory copy are draft editorial text, not confirmed artist statements. No medium, date, dimensions in centimetres, or availability is invented.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Before launch
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Confirm biography, artwork titles, and final copy with the artist.
+- Replace the reserved placeholder email `hello@danielasalem.example` and generic Instagram/Pinterest destinations with verified contact information.
+- This visual prototype uses a mail link; it does not yet contain a contact form or email delivery backend.
+- Add the final domain and social sharing image to metadata when available.
+
+System serif and sans-serif fonts keep rendering independent of external font services. Animations use native browser APIs; no animation dependency is required.

@@ -23,6 +23,8 @@ npm run build
 - `app/globals.css`: design tokens, responsive composition, and reduced-motion styles.
 - `components/artwork-gallery.tsx`: gallery and native modal artwork viewer. Supports Escape, arrow keys, focus containment, and return focus.
 - `components/reveal.tsx`: progressive scroll animation using IntersectionObserver and the Web Animations API. Content is readable without JavaScript; reduced-motion preferences are respected.
+- `components/painted-text.tsx`: shared Motion hover/focus pigment effect for the wordmark and headings, with a lighter palette on dark backgrounds.
+- `components/paint-edges.tsx`: slowly shifting edge pigments, masked by local SVG brush textures in `public/textures/`. Decorative layers cannot intercept clicks.
 - `content/artworks.ts`: typed artwork catalogue, actual source dimensions, and descriptive alternative text.
 
 ## Artwork assets
@@ -44,4 +46,4 @@ All artwork uses `next/image` with its original aspect ratio and no cropping. Hi
 - This visual prototype uses a mail link; it does not yet contain a contact form or email delivery backend.
 - Add the final domain and social sharing image to metadata when available.
 
-System serif and sans-serif fonts keep rendering independent of external font services. Animations use native browser APIs; no animation dependency is required.
+System serif and sans-serif fonts keep rendering independent of external font services. Motion powers the paint effects; entrance reveals use native browser APIs. Reduced-motion preferences stop pigment movement and retain a static hover color treatment. Forced-colors mode hides decorative pigment layers.

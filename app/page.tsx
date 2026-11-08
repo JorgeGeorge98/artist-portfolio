@@ -3,15 +3,18 @@ import { Arrow } from "@/components/arrow";
 import { ArtworkGallery } from "@/components/artwork-gallery";
 import { Reveal } from "@/components/reveal";
 import { artworks } from "@/content/artworks";
+import { PaintEdges } from "@/components/paint-edges";
+import { PaintedText } from "@/components/painted-text";
 
 export default function Home() {
   const featured = artworks[0];
 
   return (
     <>
+      <PaintEdges />
       <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-shell flex min-h-25 items-center justify-between gap-6 border-b border-line">
-        <a href="#" className="artist-logo" aria-label="Daniela Salem, home">Daniela Salem<span className="ml-1 text-accent">.</span></a>
+        <PaintedText as="a" href="#" className="artist-logo" aria-label="Daniela Salem, home">Daniela Salem<span className="ml-1 text-accent">.</span></PaintedText>
         <nav aria-label="Main navigation" className="flex items-center gap-5 text-xs sm:gap-10 sm:text-sm">
           <a className="nav-link" href="#work">Work</a><a className="nav-link" href="#about">About</a><a className="nav-link flex items-center gap-2" href="#contact">Contact <Arrow diagonal className="hidden !h-3.5 !w-3.5 sm:block" /></a>
         </nav>
@@ -25,7 +28,7 @@ export default function Home() {
           </div>
           <div className="hero-composition">
             <div className="hero-copy relative z-10">
-              <h1 id="hero-title" className="hero-title font-display">Between<br />feeling<br /><span className="whitespace-nowrap">&amp; <em>colour.</em></span></h1>
+              <PaintedText as="h1" id="hero-title" className="hero-title font-display">Between<br />feeling<br /><span className="whitespace-nowrap">&amp; <em>colour.</em></span></PaintedText>
               <p className="mt-8 max-w-70 text-sm leading-7 text-muted">Paintings by Daniela Salem.<br />An exploration of the world within,<br className="hidden sm:block" /> and the colour all around us.</p>
               <a className="text-link mt-7 inline-flex min-h-11 items-center gap-7 border-b border-ink pb-2 text-sm" href="#work">Explore the paintings <Arrow /></a>
             </div>
@@ -45,7 +48,7 @@ export default function Home() {
 
         <section id="work" className="site-shell section-space" aria-labelledby="work-title">
           <Reveal className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-18">
-            <div><p className="eyebrow mb-5 text-muted">01 / The collection</p><h2 id="work-title" className="section-title font-display">Selected <em>works</em></h2></div>
+            <div><p className="eyebrow mb-5 text-muted">01 / The collection</p><PaintedText as="h2" id="work-title" className="section-title font-display">Selected <em>works</em></PaintedText></div>
             <p className="max-w-58 text-sm leading-6 text-muted">Three paintings. Three ways of seeing.<br /><span className="text-xs">Select a work to explore.</span></p>
           </Reveal>
           <ArtworkGallery />
@@ -55,7 +58,7 @@ export default function Home() {
           <div className="site-shell section-space relative z-1">
             <Reveal className="about-grid grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
               <div><p className="eyebrow text-paper/65">02 / Behind the paintings</p><span className="about-monogram mt-12 block font-display italic text-lime" aria-hidden="true">ds.</span><p className="mt-5 text-sm text-paper/65">Daniela Salem<br /><span className="mt-1 block text-xs">Contemporary painter</span></p></div>
-              <div><h2 id="about-title" className="about-title font-display">Art begins where<br />words <em className="text-lime">leave off.</em></h2><div className="mt-9 grid gap-6 text-sm leading-7 text-paper/75 sm:grid-cols-2"><p>A face, a symbol, a remembered place. Daniela Salem’s paintings bring familiar forms into a world of vivid colour and expressive gesture.</p><p>This is a space for curiosity and connection. A place to pause, to feel, and to discover something different each time you look.</p></div><a className="text-link mt-9 inline-flex min-h-11 items-center gap-8 border-b border-paper/40 pb-2 text-sm" href="#contact">Start a conversation <Arrow diagonal /></a></div>
+              <div><PaintedText as="h2" id="about-title" className="about-title font-display" light>Art begins where<br />words <em className="text-lime">leave off.</em></PaintedText><div className="mt-9 grid gap-6 text-sm leading-7 text-paper/75 sm:grid-cols-2"><p>A face, a symbol, a remembered place. Daniela Salem’s paintings bring familiar forms into a world of vivid colour and expressive gesture.</p><p>This is a space for curiosity and connection. A place to pause, to feel, and to discover something different each time you look.</p></div><a className="text-link mt-9 inline-flex min-h-11 items-center gap-8 border-b border-paper/40 pb-2 text-sm" href="#contact">Start a conversation <Arrow diagonal /></a></div>
             </Reveal>
           </div>
           <span className="about-orbit" aria-hidden="true" />
@@ -65,7 +68,7 @@ export default function Home() {
           <Reveal>
             <p className="eyebrow mb-8 text-muted">03 / Let’s connect</p>
             <div className="flex flex-col justify-between gap-10 md:flex-row md:items-end">
-              <h2 id="contact-title" className="contact-title font-display">Something<br />caught your <em>eye?</em></h2>
+              <PaintedText as="h2" id="contact-title" className="contact-title font-display">Something<br />caught your <em>eye?</em></PaintedText>
               <div className="pb-2 md:max-w-80"><p className="mb-6 text-sm leading-7 text-muted">For conversations about the work,<br />collaborations, or simply to say hello.</p><a className="text-link inline-flex min-h-11 items-center gap-5 border-b border-ink pb-2 text-sm sm:text-base" href="mailto:hello@danielasalem.example">hello@danielasalem.example <Arrow diagonal /></a><p className="mt-3 text-[11px] text-muted">Contact address coming soon.</p></div>
             </div>
           </Reveal>

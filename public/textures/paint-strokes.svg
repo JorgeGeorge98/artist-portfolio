@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 1000" preserveAspectRatio="none">
+  <defs>
+    <filter id="bristles" x="-30%" y="-10%" width="160%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency=".038 .025" numOctaves="3" seed="12" result="edge"/>
+      <feDisplacementMap in="SourceGraphic" in2="edge" scale="24" xChannelSelector="R" yChannelSelector="G" result="rough"/>
+      <feTurbulence type="fractalNoise" baseFrequency=".34 .045" numOctaves="3" seed="8" result="grain"/>
+      <feColorMatrix in="grain" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  .7 .7 .7 0 -.35" result="dry"/>
+      <feComposite in="rough" in2="dry" operator="in"/>
+    </filter>
+    <linearGradient id="taper" x2="1" y2="0">
+      <stop stop-color="white"/>
+      <stop offset=".45" stop-color="white" stop-opacity=".85"/>
+      <stop offset="1" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#taper)" filter="url(#bristles)">
+    <path d="M-35 35 22 48 44 74 84 93 128 151 159 206 135 208 172 247 146 253 157 279 126 269 136 300 104 282 82 247 47 210 25 180-28 145Z"/>
+    <path d="M-30 204 22 226 61 273 100 345 122 409 110 425 139 465 112 455 129 492 98 473 101 508 68 475 37 411 9 367-35 336Z" opacity=".85"/>
+    <path d="M-28 479 24 491 47 526 84 558 112 605 142 656 124 670 159 716 132 704 148 746 115 727 122 756 89 727 52 682 16 631-30 610Z"/>
+    <path d="M-33 760 6 751 39 789 58 824 95 870 114 918 93 916 124 958 99 949 108 983 77 965 58 944 15 904-35 887Z" opacity=".9"/>
+  </g>
+  <g fill="none" stroke="white" stroke-linecap="round" opacity=".2" filter="url(#bristles)">
+    <path d="M12 48Q129 156 155 266M30 240Q110 371 122 469M8 495Q104 570 143 718M12 772Q78 833 110 952" stroke-width="3"/>
+    <path d="M23 63Q118 168 142 249M17 258Q87 359 101 458M20 514Q87 605 127 702" stroke-width="2"/>
+  </g>
+</svg>

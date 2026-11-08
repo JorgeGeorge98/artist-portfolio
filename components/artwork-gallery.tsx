@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { artworks } from "@/content/artworks";
 import { Arrow } from "@/components/arrow";
 import { Reveal } from "@/components/reveal";
+import { PaintedText } from "@/components/painted-text";
 
 export function ArtworkGallery() {
   const [selected, setSelected] = useState(0);
@@ -45,7 +46,7 @@ export function ArtworkGallery() {
                 <span className="view-artwork absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-paper text-ink" aria-hidden="true"><Arrow diagonal /></span>
               </div>
               <div className="mt-5 flex items-start justify-between gap-3 border-t border-line pt-4">
-                <div><h3 className="font-display text-[30px] leading-none">{item.title}</h3><p className="mt-2 text-xs text-muted">{item.theme}</p></div>
+                <div><PaintedText as="h3" className="font-display text-[30px] leading-none">{item.title}</PaintedText><p className="mt-2 text-xs text-muted">{item.theme}</p></div>
                 <span className="eyebrow pt-1 text-muted">0{index + 1}</span>
               </div>
             </button>
@@ -53,7 +54,7 @@ export function ArtworkGallery() {
         ))}
         <Reveal className="gallery-note flex flex-col justify-center">
           <span className="mb-7 block h-px w-12 bg-accent" />
-          <p className="font-display text-[clamp(2rem,3.4vw,3.3rem)] leading-[1.16] tracking-[-0.035em]">A familiar shape.<br />An unexpected colour.<br /><em>A different way of seeing.</em></p>
+          <PaintedText as="p" className="font-display text-[clamp(2rem,3.4vw,3.3rem)] leading-[1.16] tracking-[-0.035em]">A familiar shape.<br />An unexpected colour.<br /><em>A different way of seeing.</em></PaintedText>
           <p className="mt-7 max-w-65 text-sm leading-7 text-muted">An invitation to look a little longer, and find your own meaning in the marks.</p>
         </Reveal>
       </div>
@@ -73,7 +74,7 @@ export function ArtworkGallery() {
             <Image key={artwork.src} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 85vw, 65vw" className="h-auto max-h-[60svh] w-auto max-w-full object-contain" />
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-line pt-4">
-            <div aria-live="polite" aria-atomic="true"><h2 id="artwork-title" className="font-display text-3xl">{artwork.title}</h2><p id="artwork-description" className="mt-1 text-xs text-muted">{artwork.theme} · {selected + 1} of {artworks.length}</p></div>
+            <div aria-live="polite" aria-atomic="true"><PaintedText as="h2" id="artwork-title" className="font-display text-3xl">{artwork.title}</PaintedText><p id="artwork-description" className="mt-1 text-xs text-muted">{artwork.theme} · {selected + 1} of {artworks.length}</p></div>
             <div className="flex gap-2"><button className="viewer-control" onClick={() => navigate(-1)} aria-label="Previous artwork"><Arrow className="rotate-180" /></button><button className="viewer-control" onClick={() => navigate(1)} aria-label="Next artwork"><Arrow /></button></div>
           </div>
         </div>

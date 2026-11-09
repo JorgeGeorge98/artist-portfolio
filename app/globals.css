@@ -84,11 +84,19 @@ a, button { touch-action: manipulation; }
 .about-monogram { font-size: 110px; line-height: 1; letter-spacing: -.1em; }
 .about-orbit { position: absolute; width: 520px; height: 520px; border: 1px solid #dce48b10; border-radius: 50%; top: -150px; right: -200px; }
 .contact-title { font-size: clamp(48px, 6.4vw, 90px); line-height: 1.08; letter-spacing: -.055em; }
-.artwork-dialog { margin: auto; width: min(940px, calc(100% - 32px)); max-height: calc(100svh - 32px); border: 0; padding: 0; background: var(--paper); color: var(--ink); overflow-y: auto; }
+.artwork-dialog { margin: auto; width: min(1240px, calc(100% - 32px)); max-height: calc(100svh - 32px); border: 0; padding: 0; background: var(--paper); color: var(--ink); overflow-y: auto; }
 .artwork-dialog::backdrop { background: #11251ee8; backdrop-filter: blur(8px); }
 .artwork-dialog[open] { animation: enter .25s ease-out; }
 .viewer-panel { padding: 20px 32px 28px; }
-.viewer-image { min-height: min(60svh, 450px); }
+.gallery-scene { position: relative; height: min(62svh, 640px); min-height: 260px; width: 100%; overflow: hidden; background: #e6e2d9; }
+.gallery-render { position: absolute; inset: 0; }
+.gallery-render canvas { display: block; width: 100%; height: 100%; }
+.gallery-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; background: #e6e2d9; }
+.gallery-loading-mark { width: 32px; height: 40px; border: 1px solid #828779; box-shadow: 5px 5px 0 #d6d2c7; animation: gallery-breathe 1.5s ease-in-out infinite alternate; }
+.gallery-scene-note { position: absolute; top: 18px; left: 20px; padding: 9px 12px; background: #f8f3e4cc; color: #48574e; pointer-events: none; font-size: 8px; }
+.gallery-scene-note span { padding-inline: 7px; opacity: .45; }
+.gallery-fallback { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; background: var(--paper); }
+@keyframes gallery-breathe { from { opacity: .4; } to { opacity: 1; } }
 .viewer-control { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 50%; transition: background .2s; }
 .viewer-control:hover { background: var(--lime); }
 @keyframes enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }

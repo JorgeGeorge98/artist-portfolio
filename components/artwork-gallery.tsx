@@ -6,21 +6,25 @@ import { artworks } from "@/content/artworks";
 import { Arrow } from "@/components/arrow";
 import { Reveal } from "@/components/reveal";
 import { PaintedText } from "@/components/painted-text";
+import { GalleryScene } from "@/components/gallery-scene";
 
 export function ArtworkGallery() {
   const [selected, setSelected] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const previousOverflow = useRef<string | null>(null);
   const artwork = artworks[selected];
 
   function openArtwork(index: number) {
     setSelected(index);
+    setIsOpen(true);
     previousOverflow.current = document.body.style.overflow;
     dialog.current?.showModal();
     document.body.style.overflow = "hidden";
   }
 
   function restoreScroll() {
+    setIsOpen(false);
     if (previousOverflow.current !== null) {
       document.body.style.overflow = previousOverflow.current;
       previousOverflow.current = null;
@@ -70,8 +74,8 @@ export function ArtworkGallery() {
             <span className="eyebrow">A closer look</span>
             <button className="text-link flex min-h-11 items-center gap-3 text-sm" onClick={() => dialog.current?.close()} aria-label="Close artwork viewer">Close <span className="text-2xl font-light" aria-hidden="true">×</span></button>
           </div>
-          <div className="viewer-image flex items-center justify-center py-6">
-            <Image key={artwork.src} src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 85vw, 65vw" className="h-auto max-h-[60svh] w-auto max-w-full object-contain" />
+          <div className="viewer-image py-5">
+            {isOpen && <GalleryScene selected={selected} />}
           </div>
           <div className="flex items-center justify-between gap-4 border-t border-line pt-4">
             <div aria-live="polite" aria-atomic="true"><PaintedText as="h2" id="artwork-title" className="font-display text-3xl">{artwork.title}</PaintedText><p id="artwork-description" className="mt-1 text-xs text-muted">{artwork.theme} · {selected + 1} of {artworks.length}</p></div>

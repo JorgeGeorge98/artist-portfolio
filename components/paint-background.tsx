@@ -5,6 +5,8 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { useReducedMotion } from "@/components/use-reduced-motion";
 import { createPaintRandom, createStroke, MAX_ACTIVE_STROKES, type BrushStroke } from "@/lib/paint-strokes";
 
+const OPENING_STROKES = 8;
+
 function subscribeVisibility(onChange: () => void) {
   document.addEventListener("visibilitychange", onChange);
   return () => document.removeEventListener("visibilitychange", onChange);
@@ -74,6 +76,7 @@ export function PaintBackground() {
   const [strokes, setStrokes] = useState<BrushStroke[]>([]);
   const randomRef = useRef<ReturnType<typeof createPaintRandom> | null>(null);
   const sequence = useRef(0);
+  const openingStrokesRemaining = useRef(OPENING_STROKES);
   const expire = useCallback((id: string) => {
     setStrokes((current) => current.filter((stroke) => stroke.id !== id));
   }, []);
@@ -87,9 +90,16 @@ export function PaintBackground() {
     function schedule(first = false) {
       timer = setTimeout(() => {
         const next = createStroke(random, `stroke-${++sequence.current}`);
-        setStrokes((current) => current.length < MAX_ACTIVE_STROKES ? [...current, next] : current);
+        if (openingStrokesRemaining.current > 0) next.drawDuration *= 0.45;
+        const limit = openingStrokesRemaining.current > 0 ? OPENING_STROKES : MAX_ACTIVE_STROKES;
+        setStrokes((current) => current.length < limit ? [...current, next] : current);
+        openingStrokesRemaining.current = Math.max(0, openingStrokesRemaining.current - 1);
         schedule();
-      }, first ? 0 : 2800 + random() * 2000);
+      }, first && sequence.current === 0
+        ? 0
+        : openingStrokesRemaining.current > 0
+          ? 400 + random() * 350
+          : 2800 + random() * 2000);
     }
 
     schedule(true);

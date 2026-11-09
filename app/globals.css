@@ -99,6 +99,24 @@ a, button { touch-action: manipulation; }
 @keyframes gallery-breathe { from { opacity: .4; } to { opacity: 1; } }
 .viewer-control { display: flex; align-items: center; justify-content: center; width: 46px; height: 46px; border: 1px solid var(--line); border-radius: 50%; transition: background .2s; }
 .viewer-control:hover { background: var(--lime); }
+.nav-link[aria-current="page"]::after { transform: scaleX(1); }
+.gallery-page { padding-block: 64px 100px; }
+.gallery-invitation { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 36px 40px; background: var(--forest); color: var(--paper); }
+.gallery-enter { display: inline-flex; align-items: center; justify-content: center; gap: 28px; flex-shrink: 0; min-height: 54px; padding: 16px 24px; background: var(--lime); color: var(--forest); font-size: 14px; transition: background .2s, transform .2s; }
+.gallery-enter:hover { background: var(--paper); transform: translateY(-2px); }
+.gallery-search-row { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-block: 48px; }
+.catalogue-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 56px 32px; align-items: start; }
+.catalogue-grid .artwork-item { width: 100%; padding-top: 0; }
+.catalogue-grid .artwork-mat { height: 320px; padding: 24px; }
+.catalogue-grid .artwork-image { width: auto; max-width: 100%; max-height: 100%; object-fit: contain; }
+@media (max-width: 1023px) { .catalogue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 639px) {
+  .gallery-page { padding-block: 40px 72px; }
+  .gallery-invitation { align-items: stretch; flex-direction: column; padding: 28px 24px; gap: 24px; }
+  .gallery-search-row { align-items: start; flex-direction: column; gap: 16px; margin-block: 36px; }
+  .catalogue-grid { grid-template-columns: 1fr; gap: 40px; }
+  .catalogue-grid .artwork-mat { height: 350px; }
+}
 @keyframes enter { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
 @media (hover: none), (pointer: coarse) {

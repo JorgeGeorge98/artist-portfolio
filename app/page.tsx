@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Link from "next/link";
+import { SiteHeader } from "@/components/site-header";
 import { Arrow } from "@/components/arrow";
 import { ArtworkGallery } from "@/components/artwork-gallery";
 import { Reveal } from "@/components/reveal";
@@ -15,12 +17,7 @@ export default function Home() {
       <PaintBackground />
       <TouchFeedback />
       <a className="skip-link" href="#main">Skip to content</a>
-      <header className="site-shell flex min-h-25 items-center justify-between gap-6 border-b border-line">
-        <PaintedText as="a" href="#" className="artist-logo" aria-label="Daniela Salem, home">Daniela Salem<span className="ml-1 text-accent">.</span></PaintedText>
-        <nav aria-label="Main navigation" className="flex items-center gap-5 text-xs sm:gap-10 sm:text-sm">
-          <a className="nav-link" href="#work">Work</a><a className="nav-link" href="#about">About</a><a className="nav-link flex items-center gap-2" href="#contact">Contact <Arrow diagonal className="hidden !h-3.5 !w-3.5 sm:block" /></a>
-        </nav>
-      </header>
+      <SiteHeader />
 
       <main id="main">
         <section className="site-shell hero relative" aria-labelledby="hero-title">
@@ -32,7 +29,7 @@ export default function Home() {
             <div className="hero-copy relative z-10">
               <PaintedText as="h1" id="hero-title" className="hero-title font-display" mobileDelay={0.5}>Between<br />feelings<br /><span className="whitespace-nowrap">&amp; <em>colour.</em></span></PaintedText>
               <p className="mt-8 max-w-70 text-sm leading-7 text-muted">Paintings by Daniela Salem.<br />An exploration of the world within,<br className="hidden sm:block" /> and the colour all around us.</p>
-              <a className="text-link mt-7 inline-flex min-h-11 items-center gap-7 border-b border-ink pb-2 text-sm" href="#work">Explore the paintings <Arrow /></a>
+              <a className="text-link mt-7 inline-flex min-h-11 items-center gap-7 border-b border-ink pb-2 text-sm" href="/gallery">Explore the paintings <Arrow /></a>
             </div>
             <figure className="hero-art relative">
               <div className="hero-art-frame relative">
@@ -51,9 +48,10 @@ export default function Home() {
         <section id="work" className="site-shell section-space" aria-labelledby="work-title">
           <Reveal className="mb-14 flex flex-wrap items-end justify-between gap-6 md:mb-18">
             <div><p className="eyebrow mb-5 text-muted">01 / The collection</p><PaintedText as="h2" id="work-title" className="section-title font-display">Selected <em>works</em></PaintedText></div>
-            <p className="max-w-58 text-sm leading-6 text-muted">Three paintings. Three ways of seeing.<br /><span className="text-xs">Select a work to explore.</span></p>
+            <p className="max-w-58 text-sm leading-6 text-muted">An invitation to look a little longer.<br /><span className="text-xs">Select a work to explore.</span></p>
           </Reveal>
           <ArtworkGallery />
+          <Link href="/gallery" className="text-link mt-12 inline-flex min-h-11 items-center gap-6 border-b border-ink pb-2 text-sm">Explore the full gallery <Arrow /></Link>
         </section>
 
         <section id="about" className="about-section relative overflow-hidden bg-forest text-paper" aria-labelledby="about-title">

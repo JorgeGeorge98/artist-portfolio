@@ -35,7 +35,7 @@ export default function Home() {
               <div className="hero-art-frame relative">
                 <Image src={featured.src} alt={featured.alt} width={featured.width} height={featured.height} sizes="(max-width: 767px) 85vw, (max-width: 1280px) 48vw, 580px" preload className="relative z-1 h-auto w-full" />
               </div>
-              <figcaption className="mt-5 flex items-center justify-between gap-4 text-xs text-muted"><span><span className="mr-3 text-ink">01</span> Ojo</span><span className="italic">A window into another world</span></figcaption>
+              <figcaption className="mt-5 flex items-center justify-between gap-4 text-xs text-muted"><span><span className="mr-3 text-ink">01</span> {featured.title}</span><span className="italic">{featured.description}</span></figcaption>
               <span className="hero-side-label eyebrow text-muted" aria-hidden="true">Selected painting — Daniela Salem</span>
             </figure>
           </div>

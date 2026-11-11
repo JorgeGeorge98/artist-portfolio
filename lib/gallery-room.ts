@@ -5,8 +5,9 @@ const ART_SPACING = 4.1;
 const ART_HEIGHT = 1.65;
 const CAMERA_DISTANCE = 3.8;
 const LIGHT_FIXTURE_DEPTH = 0.85;
-// A shared pixel-to-scene scale preserves the mockups' relative sizes and ratios.
-const PIXELS_PER_UNIT = 200;
+// Keep high-resolution images at a gallery scale without treating pixels as real dimensions.
+// A shared scale preserves their relative image sizes until physical dimensions are supplied.
+const PIXELS_PER_UNIT = Math.max(...artworks.map((artwork) => Math.max(artwork.width, artwork.height))) / 2.1;
 const artX = (index: number) => (index - (artworks.length - 1) / 2) * ART_SPACING;
 
 type Pan = { from: number; to: number; started: number; duration: number };
@@ -190,7 +191,7 @@ export class GalleryRoom {
     context.fillText(`${String(index + 1).padStart(2, "0")}  /  ${artworks[index].title}`, 60, 122);
     context.fillStyle = "#414943";
     context.font = "62px Arial";
-    context.fillText("Daniela Salem", 60, 242);
+    context.fillText(artworks[index].dimensions, 60, 242);
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
@@ -226,7 +227,7 @@ export class GalleryRoom {
       const height = artwork.height / PIXELS_PER_UNIT;
       const x = artX(index);
       this.box(width + 0.065, height + 0.065, 0.065, frame, x, ART_HEIGHT, 0.045).castShadow = true;
-      const texture = loader.load(artwork.src, () => {
+      const texture = loader.load(artwork.gallerySrc, () => {
         if (this.disposed) { texture.dispose(); return; }
         this.requestRender();
       }, undefined, () => { if (!this.disposed) this.options.onError(); });
@@ -291,6 +292,14 @@ export class GalleryRoom {
     }
     this.camera.position.set(this.focusX, this.cameraHeight, this.distance + pullback);
     this.camera.lookAt(this.focusX, this.cameraHeight, 0);
+    // Only nearby fixtures need GPU lights and shadow maps as the camera travels.
+    for (const light of this.lights) {
+      const nearby = Math.abs(light.position.x - this.focusX) < ART_SPACING * 1.6;
+      if (light.visible !== nearby) {
+        light.visible = nearby;
+        this.renderer.shadowMap.needsUpdate = true;
+      }
+    }
     this.renderer.render(this.scene, this.camera);
     this.renderer.domElement.dataset.artwork = String(this.selected);
     this.renderer.domElement.dataset.panning = String(!!this.pan);

@@ -18,7 +18,7 @@ function PaintedStroke({ stroke, running, onExpire }: {
   onExpire: (id: string) => void;
 }) {
   const remaining = useRef((stroke.drawDuration + stroke.holdDuration) * 1000);
-  const pigment = (hue: number) => `hue-rotate(${hue}deg) saturate(1.08)`;
+  const pigment = (hue: number) => `grayscale(1) sepia(1) saturate(3) hue-rotate(${hue}deg) brightness(0.9)`;
 
   // Each stroke has its own lifetime, which pauses while the background is idle.
   useEffect(() => {
@@ -99,7 +99,7 @@ export function PaintBackground() {
         ? 0
         : openingStrokesRemaining.current > 0
           ? 400 + random() * 350
-          : 2800 + random() * 2000);
+          : 3600 + random() * 2400);
     }
 
     schedule(true);

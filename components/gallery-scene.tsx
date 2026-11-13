@@ -50,10 +50,10 @@ export function GalleryScene({ selected }: { selected: number }) {
 
   return (
     <div className="gallery-scene" data-state={status}>
-      <div ref={host} className="gallery-render" role="img" aria-label={`Gallery room showing ${artwork.title} under a spotlight. ${artwork.alt}`} />
-      {status === "loading" && <div className="gallery-loading" role="status"><span className="gallery-loading-mark" aria-hidden="true" /><p className="eyebrow">Opening the gallery</p></div>}
-      {status === "ready" && <div className="gallery-scene-note eyebrow" aria-hidden="true">The gallery <span> / </span> {String(selected + 1).padStart(2, "0")}</div>}
-      {status === "fallback" && <div className="gallery-fallback"><Image src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 85vw, 65vw" className="h-auto max-h-[48svh] w-auto max-w-full object-contain" /><p className="mt-4 text-center text-xs text-muted" role="status">The 3D gallery is unavailable on this device. You can still browse the paintings.</p></div>}
+      <div ref={host} className="gallery-render" role="img" aria-label={`Sala de exposición con ${artwork.title} bajo un foco. ${artwork.alt}`} />
+      {status === "loading" && <div className="gallery-loading" role="status"><span className="gallery-loading-mark" aria-hidden="true" /><p className="eyebrow">Abriendo la galería</p></div>}
+      {status === "ready" && <div className="gallery-scene-note eyebrow" aria-hidden="true">La galería <span> / </span> {String(selected + 1).padStart(2, "0")}</div>}
+      {status === "fallback" && <div className="gallery-fallback"><Image src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 85vw, 65vw" className="h-auto max-h-[48svh] w-auto max-w-full object-contain" /><p className="mt-4 text-center text-xs text-muted" role="status">La galería 3D no está disponible en este dispositivo. Puedes seguir explorando las pinturas.</p></div>}
     </div>
   );
 }

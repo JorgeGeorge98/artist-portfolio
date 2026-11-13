@@ -50,7 +50,7 @@ node scripts/prepare-gallery-textures.mjs
 ## Before launch
 
 - Confirm biography, artwork titles, and final copy with the artist.
-- Replace the reserved placeholder email `hello@danielasalem.example` and generic Instagram/Pinterest destinations with verified contact information.
+- Contact details are maintained in `content/contact.ts`: danielacarolinasalem@gmail.com and Instagram @artdsalem.
 - This visual prototype uses a mail link; it does not yet contain a contact form or email delivery backend.
 - Add the final domain and social sharing image to metadata when available.
 

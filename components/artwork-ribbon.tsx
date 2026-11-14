@@ -1,4 +1,6 @@
 "use client";
+import { PaintedText } from "@/components/painted-text";
+
 
 import Image from "next/image";
 import Link from "next/link";
@@ -119,7 +121,7 @@ export function ArtworkRibbon({ onSelect, viewerOpen }: { onSelect: (index: numb
   return (
     <div className="artwork-ribbon" data-paused={paused || viewerOpen}>
       <div className="site-shell ribbon-heading">
-        <h2 id="work-title" className="eyebrow">La colección</h2>
+        <PaintedText as="h2" id="work-title" className="eyebrow">La colección</PaintedText>
         <button className="ribbon-pause text-link" onClick={() => setPaused(!paused)} aria-pressed={paused}>{paused ? "Reanudar movimiento" : "Pausar movimiento"}</button>
       </div>
       <div ref={viewport} className="ribbon-window" data-dragging={dragging} onFocusCapture={(event) => {

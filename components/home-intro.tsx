@@ -40,10 +40,9 @@ export function HomeIntro({ children }: { children: ReactNode }) {
       {!finished && <div className="home-intro" data-ready={ready} aria-label="Bienvenida a Daniela Salem">
         <div className="intro-signature">
           <p className="intro-label">Pintura contemporánea</p>
-          <p className="intro-name font-display">Daniela <em>Salem</em></p>
+          <p className="intro-name font-display">Daniela Salem<span className="ml-1 text-accent">.</span></p>
           <span className="intro-rule" aria-hidden="true" />
         </div>
-        <button className="intro-skip" onClick={() => setFinished(true)}>Entrar <span aria-hidden="true">↗</span></button>
       </div>}
       <div ref={content}>{children}</div>
     </>

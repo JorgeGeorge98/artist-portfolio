@@ -51,7 +51,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
     <>
       {catalogue && <>
         <div className="gallery-invitation">
-          <div><p className="eyebrow mb-3 text-lime">Otra perspectiva</p><PaintedText as="h2" light className="font-display text-3xl sm:text-4xl">Adéntrate. <em>Quédate un rato.</em></PaintedText><p className="mt-3 max-w-100 text-sm leading-6 text-paper/75">Descubre las pinturas en las paredes de una galería virtual tranquila y llena de luz.</p></div>
+          <div><p className="eyebrow mb-3 text-lime">Otra perspectiva</p><PaintedText as="h2" light className="font-display text-3xl sm:text-4xl">Adéntrate. <em>Quédate un rato.</em></PaintedText><p className="mt-3 max-w-100 text-sm leading-6 text-paper">Descubre las pinturas en las paredes de una galería virtual tranquila y llena de luz.</p></div>
           <button className="gallery-enter" onClick={() => openArtwork(0, "gallery")} aria-haspopup="dialog">Entrar en la galería <Arrow /></button>
         </div>
         <div className="gallery-search-row">
@@ -113,6 +113,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
             <div className="min-w-0 max-w-170" aria-live="polite" aria-atomic="true">
               <p className="eyebrow mb-2 text-muted">{String(selected + 1).padStart(2, "0")} / {String(artworks.length).padStart(2, "0")}</p>
               {viewerMode === "gallery" ? <PaintedText as="h2" id="artwork-title" className="font-display text-3xl sm:text-4xl">{artwork.title}</PaintedText> : <p className="eyebrow text-muted">Sobre la obra</p>}
+              <p className="mt-2 text-xs text-muted">Acrílico</p>
               <p id="artwork-description" className="mt-3 text-sm leading-7 text-muted whitespace-pre-line">{artwork.description}</p>
               {viewerMode === "gallery" && <p className="mt-3 text-xs tracking-wide text-muted">{artwork.dimensions}{artwork.year && <> · {artwork.year}</>}</p>}
             </div>

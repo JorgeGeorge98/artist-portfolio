@@ -1,21 +1,20 @@
-# Artwork-derived website palette
+# Expressive artwork palette
 
-Derived from the five dominant colour clusters across 17 paintings. Their measured frequencies guide visual emphasis rather than literal page-area quotas: pale sage surfaces dominate, turquoise provides identity, gold provides selective emphasis, blue anchors text, and burnt orange appears sparingly.
+Warm white gives the paintings breathing room, while saturated ultramarine, turquoise, coral, violet and golden yellow are visible throughout the interface.
 
 | Role | Hex | Use |
 | --- | --- | --- |
-| Background | `#F3F6EE` | Pale sage canvas |
-| Primary | `#299BA2` | Turquoise identity and pigment effects |
-| Primary dark | `#196B72` | Readable links, focus rings, emphasized text |
-| Accent | `#D0B121` | Gold buttons, rules, selection |
-| Sage | `#96C6A2` | Source green, decorative pigment |
-| Ink | `#173B53` | Blue-derived headings and body text |
-| Muted | `#526960` | Green-derived secondary copy |
-| Border | `#CBD7C7` | Dividers |
-| Surface | `#E3EBDD` | Sage artwork mats |
-| Cool surface | `#DCEBEA` | Turquoise-tinted mats |
-| Warm surface | `#EEE9D4` | Gold-tinted mats |
-| Dark surface | `#145B63` | About section and gallery invitation |
-| Detail | `#AE401E` | Occasional burnt-orange numbering |
+| Paper | #FFFAF2 | Warm white background |
+| Turquoise | #00A6AD | Navigation and decorative accents |
+| Ultramarine | #264BC4 | Links and focus outlines |
+| Coral | #CE3B57 | Hero emphasis |
+| Violet | #7942BB | About-page heading emphasis |
+| Yellow | #F4C928 | Logo dot and fine details |
+| Vermilion | #DC4939 | Warm pigment accents |
+| Mint | #73D5AE | Green pigment accents |
+| Ink | #182B50 | Body text and headings |
+| Secondary text | #50617A | Supporting copy |
+| Petrol blue surface | #205568 | About and gallery invitation panels |
+| Light yellow | #FFE06A | Emphasis on petrol blue surfaces |
 
-Source clusters: `#96C6A2` 27.37%, `#299BA2` 26.67%, `#D0B121` 21.11%, `#11477B` 17.46%, `#AE401E` 7.40%. Hexes describe representative clusters, not exact pixel matches. Tokens live in `app/globals.css`.
+Background brushstrokes have stronger saturation and opacity. Heading hover gradients cycle through blue, violet, rose, vermilion and turquoise; dark panels use lighter complementary colours.

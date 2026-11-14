@@ -25,7 +25,7 @@ export default function AboutPage() {
         <section className="site-shell profile-hero" aria-labelledby="artist-about-title">
           <div className="profile-introduction">
             <p className="eyebrow profile-kicker"><span aria-hidden="true" />Sobre mí / Artista plástica</p>
-            <PaintedText as="h1" id="artist-about-title" className="profile-name font-display">Daniela<br /><em>Salem.</em></PaintedText>
+            <h1 id="artist-about-title" className="profile-name font-display">Daniela<br /><em className="equilibrium-pigment">Salem.</em></h1>
             <ul className="profile-qualifications" aria-label="Formación académica">
               <li><span>Grado en Bellas Artes</span><span className="text-muted">Universidad de Salamanca</span></li>
               <li><span>Máster Universitario en Formación del Profesorado</span><span className="text-muted">Universidad de Almería</span></li>
@@ -50,10 +50,14 @@ export default function AboutPage() {
 
         <section id="proceso" className="profile-process" aria-labelledby="process-title">
           <div className="site-shell profile-chapter">
-            <Reveal className="profile-chapter-heading"><p className="eyebrow text-paper/70">02 / El gesto</p><PaintedText as="h2" id="process-title" light className="profile-heading font-display">Capas de materia.<br /><em>Huellas de emoción.</em></PaintedText><div className="profile-materials" aria-label="Materiales">Gesso<span aria-hidden="true" />Acrílico<span aria-hidden="true" />Gesto</div></Reveal>
+            <Reveal className="profile-chapter-heading"><p className="eyebrow text-paper">02 / El gesto</p><PaintedText as="h2" id="process-title" light className="profile-heading font-display">Capas de materia.<br /><em>Huellas de emoción.</em></PaintedText><div className="profile-materials" aria-label="Materiales">Gesso<span aria-hidden="true" />Acrílico<span aria-hidden="true" />Gesto</div></Reveal>
             <Reveal className="profile-prose">
               <p>Mediante la superposición de capas de gesso y acrílico, utilizo la mancha, la materia y la pincelada gestual como recursos de exploración e introspección. El color adquiere un papel fundamental en la construcción de cada obra, no solo como elemento compositivo, sino también como expresión de estados emocionales y huella de mi propio proceso creativo.</p>
-              <p>En este lenguaje plástico, las figuras escultóricas abandonan su rigidez inicial para adquirir movimiento y fundirse progresivamente con el entorno. Los contrastes cromáticos, las texturas y la gestualidad pictórica reflejan una transición entre la tensión y la serenidad, dando forma a una búsqueda constante de equilibrio entre el cuerpo, las emociones y el espacio.</p>
+              <p>En este lenguaje plástico, 
+                las figuras escultóricas abandonan su rigidez inicial para adquirir 
+                movimiento y fundirse progresivamente con el entorno, dando forma a una búsqueda constante de equilibrio entre el cuerpo, las
+                 emociones y el espacio.
+              </p>
             </Reveal>
           </div>
         </section>
@@ -61,10 +65,10 @@ export default function AboutPage() {
         <section id="trayectoria" className="site-shell profile-chapter profile-biography" aria-labelledby="biography-title">
           <Reveal className="profile-chapter-heading"><p className="eyebrow text-muted">03 / El camino</p><PaintedText as="h2" id="biography-title" className="profile-heading font-display">De Caracas<br /><em>a España.</em></PaintedText><p className="profile-location">Un recorrido entre creación y enseñanza.</p></Reveal>
           <Reveal className="profile-prose profile-milestones">
-            <div><h3 className="eyebrow">El origen / Caracas</h3><p>Nací en Caracas, Venezuela; desde niña mostré interés por el arte.</p></div>
-            <div><h3 className="eyebrow">2016 / Salamanca</h3><p>En 2016 me trasladé a España para estudiar el Grado en Bellas Artes en la Universidad de Salamanca, donde tuve una formación integral y luego me especialicé en pintura.</p></div>
-            <div><h3 className="eyebrow">Ampliar la mirada / Sevilla</h3><p>Durante mi formación realicé un programa de intercambio en la Universidad de Sevilla, una experiencia que enriqueció mi práctica artística y amplió mi perspectiva sobre el arte contemporáneo.</p></div>
-            <div><h3 className="eyebrow">Creación y enseñanza</h3><p>Posteriormente cursé un Máster en Formación del Profesorado, combinando mi interés por la creación artística con la enseñanza.</p></div>
+            <div><PaintedText as="h3" className="eyebrow">El origen / Caracas</PaintedText><p>Nací en Caracas, Venezuela; desde niña mostré interés por el arte.</p></div>
+            <div><PaintedText as="h3" className="eyebrow">2016 / Salamanca</PaintedText><p>En 2016 me trasladé a España para estudiar el Grado en Bellas Artes en la Universidad de Salamanca, donde tuve una formación integral y luego me especialicé en pintura.</p></div>
+            <div><PaintedText as="h3" className="eyebrow">Ampliar la mirada / Sevilla</PaintedText><p>Durante mi formación realicé un programa de intercambio en la Universidad de Sevilla, una experiencia que enriqueció mi práctica artística y amplió mi perspectiva sobre el arte contemporáneo.</p></div>
+            <div><PaintedText as="h3" className="eyebrow">Creación y enseñanza</PaintedText><p>Posteriormente cursé un Máster en Formación del Profesorado, combinando mi interés por la creación artística con la enseñanza.</p></div>
           </Reveal>
         </section>
 

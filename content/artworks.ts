@@ -70,7 +70,7 @@ export const artworks: Artwork[] = [
     "alt": "Florecer y renacer, pintura de Daniela Salem."
   },
   {
-    "title": "Percepcion",
+    "title": "Percepción",
     "description": "En mis obras se hacen visibles las capas, los gestos y las huellas que forman parte de mi manera de crear. Me alejo de la búsqueda de la perfección para encontrar una voz propia, un lenguaje que cobra vida a través del color y de trazos directos y espontáneos.",
     "dimensions": "60 × 60 cm",
     "year": 2026,
@@ -78,7 +78,7 @@ export const artworks: Artwork[] = [
     "gallerySrc": "/gallery-artworks/percepcion.webp",
     "width": 2721,
     "height": 2772,
-    "alt": "Percepcion, pintura de Daniela Salem."
+    "alt": "Percepción, pintura de Daniela Salem."
   },
   {
     "title": "Presencia",
@@ -92,7 +92,7 @@ export const artworks: Artwork[] = [
     "alt": "Presencia, pintura de Daniela Salem."
   },
   {
-    "title": "Introspeccion",
+    "title": "Introspección",
     "description": "Esta serie explora la tensión entre la fortaleza exterior y la vulnerabilidad interna, confrontando los cánones de simetría de la escultura clásica griega con la vivencia corporal real. Al trascender la norma estética, la obra busca un equilibrio honesto entre la materia, el cuerpo y su constante transformación.",
     "dimensions": "40 × 40 cm",
     "year": 2025,
@@ -100,7 +100,7 @@ export const artworks: Artwork[] = [
     "gallerySrc": "/gallery-artworks/introspeccion.webp",
     "width": 2556,
     "height": 2544,
-    "alt": "Introspeccion, pintura de Daniela Salem."
+    "alt": "Introspección, pintura de Daniela Salem."
   },
   {
     "title": "Equilibrio",
@@ -147,7 +147,7 @@ export const artworks: Artwork[] = [
     "alt": "Entrelazados, pintura de Daniela Salem."
   },
   {
-    "title": "Reinterpretacion de la creacion",
+    "title": "Reinterpretación de la creación",
     "description": "En estas obras, el dibujo de las manos reemplaza a la palabra. La postura y el movimiento de las figuras articulan un diálogo directo sobre la empatía y la conexión humana.",
     "dimensions": "28 × 35 cm",
     "year": 2023,
@@ -155,10 +155,10 @@ export const artworks: Artwork[] = [
     "gallerySrc": "/gallery-artworks/reinterpretacion de la creacion.webp",
     "width": 2983,
     "height": 2332,
-    "alt": "Reinterpretacion de la creacion, pintura de Daniela Salem."
+    "alt": "Reinterpretación de la creación, pintura de Daniela Salem."
   },
   {
-    "title": "Transicion",
+    "title": "Transición",
     "description": "Esta serie utiliza la metáfora de las ruinas para explorar cómo los recuerdos y las vivencias del pasado dejan una huella en nuestro presente. A través de estas formas, la obra reflexiona sobre la memoria, el paso del tiempo y la transformación personal.",
     "dimensions": "65 × 81 cm",
     "year": null,
@@ -166,7 +166,7 @@ export const artworks: Artwork[] = [
     "gallerySrc": "/gallery-artworks/transicion.webp",
     "width": 776,
     "height": 631,
-    "alt": "Transicion, pintura de Daniela Salem."
+    "alt": "Transición, pintura de Daniela Salem."
   },
   {
     "title": "Mirada interior",
@@ -180,7 +180,7 @@ export const artworks: Artwork[] = [
     "alt": "Mirada interior, pintura de Daniela Salem."
   },
   {
-    "title": "Percepcion(2)",
+    "title": "Percepción (2)",
     "description": "Estas piezas abordan la mirada como un puente entre el entorno exterior y la vivencia personal. El dibujo de los ojos y los elementos naturales permite articular una forma propia de percibir el mundo, reconciliando lo que vemos con lo que sentimos a través del paisaje y la memoria.",
     "dimensions": "24 × 30 cm",
     "year": 2026,
@@ -188,7 +188,7 @@ export const artworks: Artwork[] = [
     "gallerySrc": "/gallery-artworks/percepcion (2).webp",
     "width": 3180,
     "height": 2308,
-    "alt": "Percepcion(2), pintura de Daniela Salem."
+    "alt": "Percepción (2), pintura de Daniela Salem."
   },
   {
     "title": "Naturaleza efimera",

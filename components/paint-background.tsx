@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "
 import { useReducedMotion } from "@/components/use-reduced-motion";
 import { createPaintRandom, createStroke, MAX_ACTIVE_STROKES, type BrushStroke } from "@/lib/paint-strokes";
 
-const OPENING_STROKES = 8;
+const OPENING_STROKES = 6;
 
 function subscribeVisibility(onChange: () => void) {
   document.addEventListener("visibilitychange", onChange);
@@ -18,7 +18,7 @@ function PaintedStroke({ stroke, running, onExpire }: {
   onExpire: (id: string) => void;
 }) {
   const remaining = useRef((stroke.drawDuration + stroke.holdDuration) * 1000);
-  const pigment = (hue: number) => `grayscale(1) sepia(1) saturate(3) hue-rotate(${hue}deg) brightness(0.9)`;
+  const pigment = (hue: number) => `grayscale(1) sepia(1) saturate(3.6) hue-rotate(${hue}deg) brightness(1.02)`;
 
   // Each stroke has its own lifetime, which pauses while the background is idle.
   useEffect(() => {
@@ -98,8 +98,8 @@ export function PaintBackground() {
       }, first && sequence.current === 0
         ? 0
         : openingStrokesRemaining.current > 0
-          ? 400 + random() * 350
-          : 3600 + random() * 2400);
+          ? 650 + random() * 450
+          : 6000 + random() * 3500);
     }
 
     schedule(true);

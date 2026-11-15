@@ -50,7 +50,7 @@ export default function AboutPage() {
 
         <section id="proceso" className="profile-process" aria-labelledby="process-title">
           <div className="site-shell profile-chapter">
-            <Reveal className="profile-chapter-heading"><p className="eyebrow text-paper">02 / El gesto</p><PaintedText as="h2" id="process-title" light className="profile-heading font-display">Capas de materia.<br /><em>Huellas de emoción.</em></PaintedText><div className="profile-materials" aria-label="Materiales">Gesso<span aria-hidden="true" />Acrílico<span aria-hidden="true" />Gesto</div></Reveal>
+            <Reveal className="profile-chapter-heading"><p className="eyebrow text-ink">02 / El gesto</p><PaintedText as="h2" id="process-title" className="profile-heading font-display">Capas de materia.<br /><em>Huellas de emoción.</em></PaintedText><div className="profile-materials" aria-label="Materiales">Gesso<span aria-hidden="true" />Acrílico<span aria-hidden="true" />Gesto</div></Reveal>
             <Reveal className="profile-prose">
               <p>Mediante la superposición de capas de gesso y acrílico, utilizo la mancha, la materia y la pincelada gestual como recursos de exploración e introspección. El color adquiere un papel fundamental en la construcción de cada obra, no solo como elemento compositivo, sino también como expresión de estados emocionales y huella de mi propio proceso creativo.</p>
               <p>En este lenguaje plástico, 

@@ -51,7 +51,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
     <>
       {catalogue && <>
         <div className="gallery-invitation">
-          <div><p className="eyebrow mb-3 text-lime">Otra perspectiva</p><PaintedText as="h2" light className="font-display text-3xl sm:text-4xl">Adéntrate. <em>Quédate un rato.</em></PaintedText><p className="mt-3 max-w-100 text-sm leading-6 text-paper">Descubre las pinturas en las paredes de una galería virtual tranquila y llena de luz.</p></div>
+          <div><p className="eyebrow mb-3 text-[var(--panel-emphasis)]">Otra perspectiva</p><PaintedText as="h2" className="font-display text-3xl sm:text-4xl">Adéntrate. <em>Quédate un rato.</em></PaintedText><p className="mt-3 max-w-100 text-sm leading-6 text-ink">Descubre las pinturas en las paredes de una galería virtual tranquila y llena de luz.</p></div>
           <button className="gallery-enter" onClick={() => openArtwork(0, "gallery")} aria-haspopup="dialog">Entrar en la galería <Arrow /></button>
         </div>
         <div className="gallery-search-row">

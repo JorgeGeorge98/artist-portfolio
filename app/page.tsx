@@ -47,11 +47,11 @@ export default function Home() {
           <ArtworkGallery ribbon />
         </section>
 
-        <section id="about" className="about-section relative overflow-hidden bg-forest text-paper" aria-labelledby="about-title">
+        <section id="about" className="about-section relative overflow-hidden bg-forest text-ink" aria-labelledby="about-title">
           <div className="site-shell section-space relative z-1">
             <Reveal className="about-grid grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
-              <div><p className="eyebrow text-paper">02 / Detrás de las pinturas</p><span className="about-monogram mt-12 block font-display italic text-lime" aria-hidden="true">ds.</span><p className="mt-5 text-sm text-paper">Daniela Salem<br /><span className="mt-1 block text-xs">Pintora contemporánea</span></p></div>
-              <div><PaintedText as="h2" id="about-title" className="about-title font-display" light>El arte comienza<br />donde las palabras<br /><em className="text-lime">terminan.</em></PaintedText><div className="mt-9 grid gap-6 text-sm leading-7 text-paper sm:grid-cols-2"><p>Un rostro, un símbolo, un lugar en la memoria. Las pinturas de Daniela Salem llevan formas familiares a un mundo de color vibrante y gesto expresivo.</p><p>Un espacio para la curiosidad y la conexión. Un lugar para detenerse, sentir y descubrir algo diferente en cada mirada.</p></div><a className="text-link mt-9 inline-flex min-h-11 items-center gap-8 border-b border-paper/40 pb-2 text-sm" href="/about">Conoce a la artista <Arrow diagonal /></a></div>
+              <div><p className="eyebrow text-ink">02 / Detrás de las pinturas</p><span className="about-monogram mt-12 block font-display italic text-[var(--panel-emphasis)]" aria-hidden="true">ds.</span><p className="mt-5 text-sm text-ink">Daniela Salem<br /><span className="mt-1 block text-xs">Pintora contemporánea</span></p></div>
+              <div><PaintedText as="h2" id="about-title" className="about-title font-display">El arte comienza<br />donde las palabras<br /><em className="text-[var(--panel-emphasis)]">terminan.</em></PaintedText><div className="mt-9 grid gap-6 text-sm leading-7 text-ink sm:grid-cols-2"><p>Un rostro, un símbolo, un lugar en la memoria. Las pinturas de Daniela Salem llevan formas familiares a un mundo de color vibrante y gesto expresivo.</p><p>Un espacio para la curiosidad y la conexión. Un lugar para detenerse, sentir y descubrir algo diferente en cada mirada.</p></div><a className="text-link mt-9 inline-flex min-h-11 items-center gap-8 border-b border-ink/30 pb-2 text-sm" href="/about">Conoce a la artista <Arrow diagonal /></a></div>
             </Reveal>
           </div>
           <span className="about-orbit" aria-hidden="true" />

@@ -30,7 +30,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
               <p className="artist-hero-eyebrow">{t("Cuerpo · Emoción · Transformación")}</p>
               <h1 id="hero-title" className="artist-hero-title font-display">{t("Transformación")}<br />{t("y sanación")}<br /><em className="hero-accent">{t("a través del color")}</em></h1>
               <blockquote className="artist-hero-manifesto">
-                <p>{t("“El arte es un vehículo de sanación y evolución personal donde el cuerpo y la materia transforman el dolor en equilibrio.”")}</p>
+                <p>{t("“Obras que acompañan el cambio y te invitan a volver a la calma.”")}</p>
               </blockquote>
             </Reveal>
             <HeroPhotos />

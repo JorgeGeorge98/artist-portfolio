@@ -25,12 +25,12 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: Lo
         <section className="site-shell profile-hero" aria-labelledby="artist-about-title">
           <div className="profile-introduction">
             <p className="eyebrow profile-kicker"><span aria-hidden="true" />{t("Sobre mí / Artista plástica")}</p>
-            <h1 id="artist-about-title" className="profile-name font-display">Daniela<br /><em className="equilibrium-pigment">Salem.</em></h1>
+            <h1 id="artist-about-title" className="profile-name font-display">Daniela<br /><em className="hero-accent">Salem.</em></h1>
             <ul className="profile-qualifications" aria-label={t("Formación académica")}>
               <li><span>{t("Grado en Bellas Artes")}</span><span className="text-muted">{t("Universidad de Salamanca")}</span></li>
               <li><span>{t("Máster Universitario en Formación del Profesorado")}</span><span className="text-muted">{t("Universidad de Almería")}</span></li>
             </ul>
-            <p className="profile-statement font-display">{t("Mi práctica artística surge de una necesidad íntima de autoconocimiento: explorar quién soy y plasmar las complejidades de mi mundo interior.")}</p>
+            <p className="profile-statement font-display">{t("Mi práctica artística surge de una necesidad íntima de autoconocimiento: explorar quién soy y plasmar mi mundo interior.")}</p>
             <a href="#practica" className="text-link profile-read-link">{t("Conoce mi universo")} <Arrow className="rotate-90 !h-4 !w-4" /></a>
           </div>
           <figure className="profile-portrait">

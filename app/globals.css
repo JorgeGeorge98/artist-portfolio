@@ -164,7 +164,7 @@ a, button { touch-action: manipulation; }
 .artist-hero-eyebrow { font-size: 11px; line-height: 1.7; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
 .artist-hero-title { margin-top: 20px; font-size: clamp(44px, 4.4vw, 62px); font-weight: 400; line-height: 1.12; letter-spacing: -.055em; }
 .artist-hero-title em { color: var(--coral); font-weight: 400; }
-.artist-hero-title .hero-accent { color: #b89b1c; }
+.artist-hero-title .hero-accent, .profile-name .hero-accent { color: #b89b1c; }
 :is(.artist-hero-title, .profile-name) .equilibrium-pigment { display: inline-block; background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, var(--pigment-stops)); background-size: 160px 160px, 190% 100%; background-blend-mode: multiply; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: equilibrium-colors 18s ease-in-out infinite; padding-right: .06em; }
 :is(.artist-hero-title, .profile-name) .equilibrium-pigment {
   background-image: url('/textures/paint-grain.svg'), linear-gradient(90deg, var(--pigment-stops));

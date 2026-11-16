@@ -18,7 +18,6 @@ function PaintedStroke({ stroke, running, onExpire }: {
   onExpire: (id: string) => void;
 }) {
   const remaining = useRef((stroke.drawDuration + stroke.holdDuration) * 1000);
-  const pigment = (hue: number) => `grayscale(1) sepia(1) saturate(3.6) hue-rotate(${hue}deg) brightness(1.02)`;
 
   // Each stroke has its own lifetime, which pauses while the background is idle.
   useEffect(() => {
@@ -54,12 +53,12 @@ function PaintedStroke({ stroke, running, onExpire }: {
       >
         <motion.div
           className="paint-stroke-texture"
-          style={{ backgroundImage: `url('/textures/brush-${stroke.texture}.webp')` }}
+          style={{ backgroundImage: `url('/textures/brush-${stroke.texture}-${stroke.pigment}.webp')` }}
           initial={false}
           animate={{
             filter: running
-              ? [pigment(stroke.hue), pigment(stroke.hue + stroke.hueDrift), pigment(stroke.hue)]
-              : pigment(stroke.hue),
+              ? ["brightness(1)", "brightness(1.04)", "brightness(1)"]
+              : "brightness(1)",
           }}
           transition={{ duration: running ? stroke.colorDuration : 0, repeat: running ? Infinity : 0, ease: "easeInOut" }}
         />
@@ -99,7 +98,7 @@ export function PaintBackground() {
         ? 0
         : openingStrokesRemaining.current > 0
           ? 650 + random() * 450
-          : 6000 + random() * 3500);
+          : 4800 + random() * 3000);
     }
 
     schedule(true);

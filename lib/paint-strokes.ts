@@ -7,8 +7,7 @@ export type BrushStroke = {
   angle: number;
   mirrored: boolean;
   opacity: number;
-  hue: number;
-  hueDrift: number;
+  pigment: string;
   colorDuration: number;
   drawDuration: number;
   holdDuration: number;
@@ -17,16 +16,8 @@ export type BrushStroke = {
 
 export const MAX_ACTIVE_STROKES = 6;
 
-// Artwork-inspired pigment families, applied independently of the brush texture.
-const PIGMENT_HUES = [
-  5,   // golden yellow
-  65,  // leaf green
-  130, // turquoise
-  175, // cobalt blue
-  215, // violet
-  300, // warm rose
-  335, // vermilion
-];
+// Five colours from the artwork analysis, each equally likely to appear.
+const PIGMENTS = ["96c6a2", "299ba2", "d0b121", "11477b", "ae401e"];
 
 /** A new seed is chosen in the browser on each page load. */
 export function createPaintRandom(seed: number) {
@@ -41,7 +32,7 @@ export function createPaintRandom(seed: number) {
 
 export function createStroke(random: () => number, id: string): BrushStroke {
   const texture = random() > 0.42 ? "teal" : "ochre";
-  const hue = PIGMENT_HUES[Math.floor(random() * PIGMENT_HUES.length)];
+  const pigment = PIGMENTS[Math.floor(random() * PIGMENTS.length)];
   return {
     id,
     texture,
@@ -51,8 +42,7 @@ export function createStroke(random: () => number, id: string): BrushStroke {
     angle: -80 + random() * 160,
     mirrored: random() > 0.5,
     opacity: 0.7 + random() * 0.25,
-    hue: hue + (random() - 0.5) * 12,
-    hueDrift: 4 + random() * 5,
+    pigment,
     colorDuration: 30 + random() * 15,
     drawDuration: 2.8 + random() * 1.7,
     holdDuration: 9 + random() * 4,

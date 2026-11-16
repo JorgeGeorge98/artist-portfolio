@@ -11,7 +11,7 @@ const PIXELS_PER_UNIT = Math.max(...artworks.map((artwork) => Math.max(artwork.w
 const artX = (index: number) => (index - (artworks.length - 1) / 2) * ART_SPACING;
 
 type Pan = { from: number; to: number; started: number; duration: number };
-type RoomOptions = { onReady: () => void; onError: () => void };
+type RoomOptions = { locale?: "es" | "en"; onReady: () => void; onError: () => void };
 
 export class GalleryRoom {
   private scene = new THREE.Scene();
@@ -194,7 +194,7 @@ export class GalleryRoom {
     context.fillText(title, 60, 122);
     context.fillStyle = "#486861";
     context.font = "62px Arial";
-    context.fillText(`${artworks[index].dimensions}${artworks[index].year ? ` · ${artworks[index].year}` : ""}`, 60, 242);
+    context.fillText(`${this.options.locale === "en" ? artworks[index].dimensions.replace("cada obra", "each artwork") : artworks[index].dimensions}${artworks[index].year ? ` · ${artworks[index].year}` : ""}`, 60, 242);
     const texture = new THREE.CanvasTexture(canvas);
     texture.colorSpace = THREE.SRGBColorSpace;
     texture.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());

@@ -1,14 +1,20 @@
 "use client";
+
+import { useLocale } from "@/components/locale-provider";
+
 import { PaintedText } from "@/components/painted-text";
+
 
 
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { artworks } from "@/content/artworks";
+import { getArtworks } from "@/content/localized-artworks";
 import { Arrow } from "@/components/arrow";
 
 export function ArtworkRibbon({ onSelect, viewerOpen }: { onSelect: (index: number) => void; viewerOpen: boolean }) {
+  const { locale, t, path } = useLocale();
+  const artworks = getArtworks(locale);
   const [paused, setPaused] = useState(false);
   const viewport = useRef<HTMLDivElement>(null);
   const track = useRef<HTMLDivElement>(null);
@@ -121,8 +127,8 @@ export function ArtworkRibbon({ onSelect, viewerOpen }: { onSelect: (index: numb
   return (
     <div className="artwork-ribbon" data-paused={paused || viewerOpen}>
       <div className="site-shell ribbon-heading">
-        <PaintedText as="h2" id="work-title" className="eyebrow">La colección</PaintedText>
-        <button className="ribbon-pause text-link" onClick={() => setPaused(!paused)} aria-pressed={paused}>{paused ? "Reanudar movimiento" : "Pausar movimiento"}</button>
+        <PaintedText as="h2" id="work-title" className="eyebrow">{t("La colección")}</PaintedText>
+        <button className="ribbon-pause text-link" onClick={() => setPaused(!paused)} aria-pressed={paused}>{paused ? t("Reanudar movimiento") : t("Pausar movimiento")}</button>
       </div>
       <div ref={viewport} className="ribbon-window" data-dragging={dragging} onFocusCapture={(event) => {
         if (event.target.matches(":focus-visible")) {
@@ -136,7 +142,7 @@ export function ArtworkRibbon({ onSelect, viewerOpen }: { onSelect: (index: numb
           {[0, 1].map((copy) => (
             <div className="ribbon-group" key={copy} aria-hidden={copy === 1 ? true : undefined}>
               {artworks.map((artwork, index) => (
-                <button key={artwork.src} className="ribbon-artwork" style={{ width: `calc(var(--ribbon-height) * ${artwork.width / artwork.height})` }} onClick={() => onSelect(index)} tabIndex={copy === 1 ? -1 : 0} aria-label={`Ver ${artwork.title}`} aria-haspopup="dialog">
+                <button key={artwork.src} className="ribbon-artwork" style={{ width: `calc(var(--ribbon-height) * ${artwork.width / artwork.height})` }} onClick={() => onSelect(index)} tabIndex={copy === 1 ? -1 : 0} aria-label={`${locale === "en" ? "View" : "Ver"} ${artwork.title}`} aria-haspopup="dialog">
                   <div className="ribbon-image">
                     <Image src={artwork.src} alt={copy === 1 ? "" : artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 330px, 540px" draggable={false} />
                     <span className="ribbon-view" aria-hidden="true"><Arrow diagonal /></span>
@@ -147,7 +153,7 @@ export function ArtworkRibbon({ onSelect, viewerOpen }: { onSelect: (index: numb
           ))}
         </div>
       </div>
-      <div className="site-shell ribbon-footer"><p className="text-sm text-muted">Detén la mirada. Descubre cada obra.</p><Link href="/gallery" className="text-link inline-flex min-h-11 items-center gap-5 border-b border-ink text-sm">Explorar la colección <Arrow /></Link></div>
+      <div className="site-shell ribbon-footer"><p className="text-sm text-muted">{t("Detén la mirada. Descubre cada obra.")}</p><Link href={path("/gallery")} className="text-link inline-flex min-h-11 items-center gap-5 border-b border-ink text-sm">{t("Explorar la colección")} <Arrow /></Link></div>
     </div>
   );
 }

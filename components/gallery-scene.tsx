@@ -1,12 +1,16 @@
 "use client";
 
+import { useLocale } from "@/components/locale-provider";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { artworks } from "@/content/artworks";
+import { getArtworks } from "@/content/localized-artworks";
 import { useReducedMotion } from "@/components/use-reduced-motion";
 import type { GalleryRoom } from "@/lib/gallery-room";
 
 export function GalleryScene({ selected }: { selected: number }) {
+  const { locale, t } = useLocale();
+  const artworks = getArtworks(locale);
   const host = useRef<HTMLDivElement>(null);
   const room = useRef<GalleryRoom | null>(null);
   const reduceMotion = useReducedMotion();
@@ -37,6 +41,7 @@ export function GalleryScene({ selected }: { selected: number }) {
       instance = new GalleryRoom(host.current, settings.current.selected, {
         onReady: () => { if (!cancelled) setStatus("ready"); },
         onError: fail,
+        locale,
       }, canvas);
       room.current = instance;
     }).catch(fail);
@@ -46,14 +51,14 @@ export function GalleryScene({ selected }: { selected: number }) {
       instance?.dispose();
       room.current = null;
     };
-  }, []);
+  }, [locale]);
 
   return (
     <div className="gallery-scene" data-state={status}>
-      <div ref={host} className="gallery-render" role="img" aria-label={`Sala de exposición con ${artwork.title} bajo un foco. ${artwork.alt}`} />
-      {status === "loading" && <div className="gallery-loading" role="status"><span className="gallery-loading-mark" aria-hidden="true" /><p className="eyebrow">Abriendo la galería</p></div>}
-      {status === "ready" && <div className="gallery-scene-note eyebrow" aria-hidden="true">La galería <span> / </span> {String(selected + 1).padStart(2, "0")}</div>}
-      {status === "fallback" && <div className="gallery-fallback"><Image src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 85vw, 65vw" className="h-auto max-h-[48svh] w-auto max-w-full object-contain" /><p className="mt-4 text-center text-xs text-muted" role="status">La galería 3D no está disponible en este dispositivo. Puedes seguir explorando las pinturas.</p></div>}
+      <div ref={host} className="gallery-render" role="img" aria-label={locale === "en" ? `Gallery room with ${artwork.title} under a spotlight. ${artwork.alt}` : `Sala de exposición con ${artwork.title} bajo un foco. ${artwork.alt}`} />
+      {status === "loading" && <div className="gallery-loading" role="status"><span className="gallery-loading-mark" aria-hidden="true" /><p className="eyebrow">{t("Abriendo la galería")}</p></div>}
+      {status === "ready" && <div className="gallery-scene-note eyebrow" aria-hidden="true">{t("La galería")} <span> / </span> {String(selected + 1).padStart(2, "0")}</div>}
+      {status === "fallback" && <div className="gallery-fallback"><Image src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} sizes="(max-width: 767px) 85vw, 65vw" className="h-auto max-h-[48svh] w-auto max-w-full object-contain" /><p className="mt-4 text-center text-xs text-muted" role="status">{t("La galería 3D no está disponible en este dispositivo. Puedes seguir explorando las pinturas.")}</p></div>}
     </div>
   );
 }

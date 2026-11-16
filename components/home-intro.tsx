@@ -1,9 +1,12 @@
 "use client";
 
+import { useLocale } from "@/components/locale-provider";
+
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 
 export function HomeIntro({ children }: { children: ReactNode }) {
+  const { t } = useLocale();
   const [ready, setReady] = useState(false);
   const [finished, setFinished] = useState(false);
   const content = useRef<HTMLDivElement>(null);
@@ -12,10 +15,10 @@ export function HomeIntro({ children }: { children: ReactNode }) {
     if (finished) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (reduced.matches || window.matchMedia("(forced-colors: active)").matches || window.location.hash) {
-      setFinished(true);
-      return;
+      const skip = window.requestAnimationFrame(() => setFinished(true));
+      return () => window.cancelAnimationFrame(skip);
     }
-    setReady(true);
+    const start = window.requestAnimationFrame(() => setReady(true));
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     if (content.current) content.current.inert = true;
@@ -26,6 +29,7 @@ export function HomeIntro({ children }: { children: ReactNode }) {
     reduced.addEventListener("change", end);
     const node = content.current;
     return () => {
+      window.cancelAnimationFrame(start);
       window.clearTimeout(timer);
       document.removeEventListener("keydown", onKey);
       reduced.removeEventListener("change", end);
@@ -37,9 +41,9 @@ export function HomeIntro({ children }: { children: ReactNode }) {
   return (
     <>
       <noscript><style>{".home-intro { display: none !important; }"}</style></noscript>
-      {!finished && <div className="home-intro" data-ready={ready} aria-label="Bienvenida a Daniela Salem">
+      {!finished && <div className="home-intro" data-ready={ready} aria-label={t("Bienvenida a Daniela Salem")}>
         <div className="intro-signature">
-          <p className="intro-label">Pintura contemporánea</p>
+          <p className="intro-label">{t("Pintura contemporánea")}</p>
           <p className="intro-name font-display">Daniela Salem<span className="ml-1 text-accent">.</span></p>
           <span className="intro-rule" aria-hidden="true" />
         </div>

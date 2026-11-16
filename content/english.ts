@@ -1,5 +1,6 @@
 // Artwork titles and proper names intentionally retain their original spelling.
 export const english: Record<string, string> = {
+  "Consultar": "Inquire",
   "Mi historia, recuerdos y vivencias han ido determinando quién soy, el arte me ha permitido expresar mi propio lenguaje artístico ayudándome a encontrar mi paz interior.": "My story, memories and experiences have shaped who I am. Art has allowed me to express my own artistic language, helping me find inner peace.",
   "Saltar al contenido": "Skip to content",
   "Cuerpo · Emoción · Transformación": "Body · Emotion · Transformation",
@@ -19,7 +20,7 @@ export const english: Record<string, string> = {
   "¿Algo ha": "Has something",
   "captado tu": "caught your",
   "mirada?": "eye?",
-  "Para conversar sobre las obras,": "To talk about the artworks,",
+  "Para consultar sobre las obras,": "To inquire about the artworks,",
   "colaborar o simplemente saludar.": "collaborate or simply say hello.",
   "Instagram de Daniela Salem: @artdsalem, se abre en una nueva pestaña": "Daniela Salem on Instagram: @artdsalem, opens in a new tab",
   "Contactar por WhatsApp": "Get in touch on WhatsApp",

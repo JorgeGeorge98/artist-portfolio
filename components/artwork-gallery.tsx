@@ -15,7 +15,7 @@ import { GalleryScene } from "@/components/gallery-scene";
 import { ArtworkPrice } from "@/components/artwork-price";
 
 export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogue?: boolean; ribbon?: boolean }) {
-  const { locale, t } = useLocale();
+  const { locale, t, path } = useLocale();
   const artworks = getArtworks(locale);
   const [query, setQuery] = useState("");
   const normalizedQuery = query.trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -108,6 +108,9 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
                   <p className="eyebrow text-muted mb-4">Daniela Salem</p>
                   <PaintedText as="h2" id="artwork-title" className="editorial-title font-display">{artwork.title}</PaintedText>
                   <span className="editorial-rule" aria-hidden="true" />
+                  {!artwork.sold && <a href={path("/#contact")} className="text-link inline-flex min-h-11 items-center gap-5 border-b border-ink pb-1 text-sm" onClick={() => { dialog.current?.close(); restoreScroll(); }}>
+                    {t("Consultar")} <Arrow diagonal />
+                  </a>}
                 </div>
                 <div className="artwork-detail-image">
                   <Image src={artwork.src} alt={artwork.alt} width={artwork.width} height={artwork.height} unoptimized loading="eager" className="detail-original" />
@@ -122,6 +125,9 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
               {viewerMode === "gallery" ? <PaintedText as="h2" id="artwork-title" className="font-display text-3xl sm:text-4xl">{artwork.title}</PaintedText> : <p className="eyebrow text-muted">{t("Sobre la obra")}</p>}
               <p className="mt-2 text-xs text-muted">{t("Acrílico")}</p>
               <ArtworkPrice artwork={artwork} />
+              {viewerMode === "gallery" && !artwork.sold && <a href={path("/#contact")} className="text-link mt-4 inline-flex min-h-11 items-center gap-5 border-b border-ink pb-1 text-sm" onClick={() => { dialog.current?.close(); restoreScroll(); }}>
+                {t("Consultar")} <Arrow diagonal />
+              </a>}
               <p id="artwork-description" className="mt-3 text-sm leading-7 text-muted whitespace-pre-line">{artwork.description}</p>
               {viewerMode === "gallery" && <p className="mt-3 text-xs tracking-wide text-muted">{artwork.dimensions}{artwork.year && <> · {artwork.year}</>}</p>}
             </div>

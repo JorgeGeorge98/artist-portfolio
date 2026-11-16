@@ -17,7 +17,7 @@ export type BrushStroke = {
 export const MAX_ACTIVE_STROKES = 6;
 
 // Five colours from the artwork analysis, each equally likely to appear.
-const PIGMENTS = ["96c6a2", "299ba2", "d0b121", "11477b", "ae401e"];
+const PIGMENTS = ["a9d0b3", "299ba2", "d9c14d", "11477b", "ae401e"];
 
 /** A new seed is chosen in the browser on each page load. */
 export function createPaintRandom(seed: number) {

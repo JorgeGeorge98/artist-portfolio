@@ -28,7 +28,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
           <div className="site-shell artist-hero-layout">
             <Reveal className="artist-hero-copy">
               <p className="artist-hero-eyebrow">{t("Cuerpo · Emoción · Transformación")}</p>
-              <h1 id="hero-title" className="artist-hero-title font-display">{t("Transformación")}<br />{t("y sanación")}<br /><em className="equilibrium-pigment">{t("a través del color")}</em></h1>
+              <h1 id="hero-title" className="artist-hero-title font-display">{t("Transformación")}<br />{t("y sanación")}<br /><em className="hero-accent">{t("a través del color")}</em></h1>
               <blockquote className="artist-hero-manifesto">
                 <p>{t("“El arte es un vehículo de sanación y evolución personal donde el cuerpo y la materia transforman el dolor en equilibrio.”")}</p>
               </blockquote>
@@ -45,7 +45,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
           <div className="site-shell section-space relative z-1">
             <Reveal className="about-grid grid gap-12 md:grid-cols-[1fr_2fr] md:gap-20">
               <div><p className="eyebrow text-ink">{t("02 / Detrás de las pinturas")}</p><span className="about-monogram mt-12 block font-display italic text-[var(--panel-emphasis)]" aria-hidden="true">ds.</span><p className="mt-5 text-sm text-ink">Daniela Salem<br /><span className="mt-1 block text-xs">{t("Pintora contemporánea")}</span></p></div>
-              <div><h2 id="about-title" className="about-title font-display">{t("El arte comienza")}<br />{t("donde las palabras")}<br /><em className="text-[var(--panel-emphasis)]">{t("terminan.")}</em></h2><div className="mt-9 grid gap-6 text-sm leading-7 text-ink sm:grid-cols-2"><p>{t("A lo largo de mi trayectoria, el arte se ha convertido en una forma de explorar experiencias personales, emociones y distintas maneras de percibir el mundo.")}</p><p>{t("Me interesa expresar a través del arte aquello que muchas veces resulta difícil explicar con palabras y crear obras que permitan al espectador encontrar su propia interpretación.")} </p></div>
+              <div><h2 id="about-title" className="about-title font-display">{t("Mediante el arte")}<br />{t("reflejo mi")}<br /><em className="text-[var(--panel-emphasis)]">{t("propia mirada")}</em></h2><div className="mt-9 max-w-150 text-sm leading-7 text-ink"><p>{t("Mi historia, recuerdos y vivencias han ido determinando quién soy, el arte me ha permitido expresar mi propio lenguaje artístico ayudándome a encontrar mi paz interior.")}</p></div>
                     <a className="text-link mt-9 inline-flex min-h-11 items-center gap-8 border-b border-ink/30 pb-2 text-sm" href={path("/about")}>{t("Conoce a la artista")} <Arrow diagonal /></a></div>
             </Reveal>
           </div>

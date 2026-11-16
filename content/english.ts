@@ -1,5 +1,6 @@
 // Artwork titles and proper names intentionally retain their original spelling.
 export const english: Record<string, string> = {
+  "Mi historia, recuerdos y vivencias han ido determinando quién soy, el arte me ha permitido expresar mi propio lenguaje artístico ayudándome a encontrar mi paz interior.": "My story, memories and experiences have shaped who I am. Art has allowed me to express my own artistic language, helping me find inner peace.",
   "Saltar al contenido": "Skip to content",
   "Cuerpo · Emoción · Transformación": "Body · Emotion · Transformation",
   "Transformación": "Transformation",
@@ -8,9 +9,9 @@ export const english: Record<string, string> = {
   "“El arte es un vehículo de sanación y evolución personal donde el cuerpo y la materia transforman el dolor en equilibrio.”": "“Art is a vehicle for healing and personal growth, where body and matter transform pain into balance.”",
   "02 / Detrás de las pinturas": "02 / Behind the paintings",
   "Pintora contemporánea": "Contemporary painter",
-  "El arte comienza": "Art begins",
-  "donde las palabras": "where words",
-  "terminan.": "end.",
+  "Mediante el arte": "Through art",
+  "reflejo mi": "I express my own",
+  "propia mirada": "way of seeing",
   "A lo largo de mi trayectoria, el arte se ha convertido en una forma de explorar experiencias personales, emociones y distintas maneras de percibir el mundo.": "Throughout my journey, art has become a way of exploring personal experiences, emotions and different ways of perceiving the world.",
   "Me interesa expresar a través del arte aquello que muchas veces resulta difícil explicar con palabras y crear obras que permitan al espectador encontrar su propia interpretación.": "Through art, I seek to express what is often difficult to put into words and create works that invite viewers to find their own interpretation.",
   "Conoce a la artista": "Meet the artist",

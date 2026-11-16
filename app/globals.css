@@ -164,6 +164,7 @@ a, button { touch-action: manipulation; }
 .artist-hero-eyebrow { font-size: 11px; line-height: 1.7; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
 .artist-hero-title { margin-top: 20px; font-size: clamp(44px, 4.4vw, 62px); font-weight: 400; line-height: 1.12; letter-spacing: -.055em; }
 .artist-hero-title em { color: var(--coral); font-weight: 400; }
+.artist-hero-title .hero-accent { color: #b89b1c; }
 :is(.artist-hero-title, .profile-name) .equilibrium-pigment { display: inline-block; background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, var(--pigment-stops)); background-size: 160px 160px, 190% 100%; background-blend-mode: multiply; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: equilibrium-colors 18s ease-in-out infinite; padding-right: .06em; }
 :is(.artist-hero-title, .profile-name) .equilibrium-pigment {
   background-image: url('/textures/paint-grain.svg'), linear-gradient(90deg, var(--pigment-stops));
@@ -439,7 +440,31 @@ a, button { touch-action: manipulation; }
 }
 /* A short editorial signature, followed by a quiet reveal of the artwork. */
 .home-intro { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; overflow: hidden; background: var(--paper); color: var(--ink); animation: intro-exit .8s 1.25s cubic-bezier(.4,0,.2,1) both; }
-.intro-signature { text-align: center; padding: 28px; transform: translateY(-4vh); }
+.intro-collage { position: absolute; inset: 0; pointer-events: none; opacity: .5; animation: intro-collage-arrive 1.2s cubic-bezier(.2,.7,.2,1) both; }
+.intro-collage::after { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 44%, var(--paper) 0%, #fffaf2e6 17%, #fffaf260 48%, #fffaf220 100%); }
+.intro-collage-piece { position: absolute; width: 27vw; padding: 6px; background: var(--paper); box-shadow: 0 12px 38px #1c414926; }
+.intro-collage-piece img { display: block; width: 100%; height: auto; }
+.intro-collage-piece-1 { left: -4%; top: -24%; transform: rotate(-12deg); }
+.intro-collage-piece-2 { left: 19%; top: -24%; transform: rotate(8deg); }
+.intro-collage-piece-3 { right: 19%; top: -37%; transform: rotate(-9deg); }
+.intro-collage-piece-4 { right: -7%; top: -12%; transform: rotate(13deg); width: 33vw; }
+.intro-collage-piece-5 { left: -9%; bottom: -14%; transform: rotate(9deg); width: 36vw; }
+.intro-collage-piece-6 { left: 20%; bottom: -23%; transform: rotate(-13deg); width: 32vw; }
+.intro-collage-piece-7 { right: 16%; bottom: -27%; transform: rotate(8deg); width: 31vw; }
+.intro-collage-piece-8 { right: -5%; bottom: -30%; transform: rotate(-10deg); }
+.intro-signature { position: relative; z-index: 1; text-align: center; padding: 28px; transform: translateY(-4vh); }
+@keyframes intro-collage-arrive { from { opacity: 0; transform: scale(1.025); } to { opacity: .5; transform: scale(1); } }
+@media (max-width: 639px) {
+  .intro-collage-piece { width: 52vw; padding: 4px; }
+  .intro-collage-piece-1 { left: -15%; top: -10%; }
+  .intro-collage-piece-2 { left: 28%; top: -9%; }
+  .intro-collage-piece-3 { right: -25%; top: 8%; }
+  .intro-collage-piece-4 { right: -22%; top: 39%; width: 55vw; }
+  .intro-collage-piece-5 { left: -24%; bottom: 22%; width: 58vw; }
+  .intro-collage-piece-6 { left: -10%; bottom: -6%; width: 65vw; }
+  .intro-collage-piece-7 { right: -13%; bottom: -3%; width: 58vw; }
+  .intro-collage-piece-8 { right: 26%; bottom: -24%; }
+}
 .intro-label { font-size: 11px; line-height: 1.6; letter-spacing: .24em; text-transform: uppercase; color: var(--muted); animation: intro-arrive .7s .08s both; }
 .intro-name { margin-top: 22px; font-size: clamp(44px, 7.5vw, 108px); letter-spacing: -.055em; line-height: 1.2; animation: intro-arrive .85s .16s cubic-bezier(.2,.7,.2,1) both; }
 .intro-rule { display: block; width: 42px; height: 1px; margin: 30px auto 0; background: var(--accent); animation: intro-arrive .8s .25s both; }

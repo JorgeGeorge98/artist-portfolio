@@ -1,9 +1,12 @@
 "use client";
 
 import { useLocale } from "@/components/locale-provider";
+import Image from "next/image";
+import { artworks } from "@/content/artworks";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+const introArtworks = [0, 2, 7, 9, 12, 14, 19, 20].map(index => artworks[index]);
 
 export function HomeIntro({ children }: { children: ReactNode }) {
   const { t } = useLocale();
@@ -42,6 +45,13 @@ export function HomeIntro({ children }: { children: ReactNode }) {
     <>
       <noscript><style>{".home-intro { display: none !important; }"}</style></noscript>
       {!finished && <div className="home-intro" data-ready={ready} aria-label={t("Bienvenida a Daniela Salem")}>
+        <div className="intro-collage" aria-hidden="true">
+          {introArtworks.map((artwork, index) => (
+            <div className={`intro-collage-piece intro-collage-piece-${index + 1}`} key={artwork.src}>
+              <Image src={artwork.gallerySrc} alt="" width={artwork.width} height={artwork.height} sizes="(max-width: 639px) 55vw, 32vw" loading="eager" />
+            </div>
+          ))}
+        </div>
         <div className="intro-signature">
           <p className="intro-label">{t("Pintura contemporánea")}</p>
           <p className="intro-name font-display">Daniela Salem<span className="ml-1 text-accent">.</span></p>

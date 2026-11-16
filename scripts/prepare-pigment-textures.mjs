@@ -29,3 +29,19 @@ for (const texture of ["teal", "ochre"]) {
       .toFile(`${directory}brush-${texture}-${pigment}.webp`);
   }
 }
+
+// Lighter green and yellow variants. Preserve the original alpha and every
+// bristle edge; blend RGB towards white without blur or resampling.
+for (const texture of ["teal", "ochre"]) {
+  for (const [source, target, amount] of [["96c6a2", "a9d0b3", .18], ["d0b121", "d9c14d", .2]]) {
+    const { data, info } = await sharp(`${directory}brush-${texture}-${source}.webp`)
+      .ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    for (let i = 0; i < data.length; i += 4) {
+      for (let channel = 0; channel < 3; channel++) {
+        data[i + channel] = Math.round(data[i + channel] + (255 - data[i + channel]) * amount);
+      }
+    }
+    await sharp(data, { raw: info }).webp({ lossless: true })
+      .toFile(`${directory}brush-${texture}-${target}.webp`);
+  }
+}

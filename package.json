@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node scripts/prepare-static-images.mjs",
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "prebuild": "node scripts/prepare-static-images.mjs",
+    "build": "next build && node scripts/finalize-static-export.mjs && node scripts/check-static-export.mjs",
+    "start": "node scripts/preview-static.mjs",
+    "preview": "node scripts/preview-static.mjs",
     "lint": "eslint"
   },
   "dependencies": {
@@ -23,6 +26,7 @@
     "@types/three": "^0.187.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.5",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

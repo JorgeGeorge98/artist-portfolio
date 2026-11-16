@@ -1,12 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: "export",
+  partialPrefetching: false,
+  images: {
+    loader: "custom",
+    loaderFile: "./lib/static-image-loader.ts",
+    deviceSizes: [640, 828, 1080, 1440, 1920],
+    imageSizes: [320, 480],
+  },
   experimental: {
     agentFeedback: true,
+    globalNotFound: true,
   },
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       "*.css": {

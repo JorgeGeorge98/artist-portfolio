@@ -32,8 +32,10 @@ const spanishMetadata: Metadata = {
 };
 
 export function generateStaticParams() {
-  return [{ lang: "es" }, { lang: "en" }];
+  return [{ lang: "en" }];
 }
+
+export const dynamicParams = false;
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params;

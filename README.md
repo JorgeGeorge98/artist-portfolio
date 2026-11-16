@@ -1,57 +1,93 @@
-# Daniela Salem — portfolio prototype
+﻿# Daniela Salem portfolio
 
-A responsive contemporary painting portfolio built with Next.js App Router, TypeScript, and Tailwind CSS 4.
+Bilingual contemporary art portfolio built with Next.js App Router, TypeScript,
+Tailwind CSS, Motion and Three.js. Prepared as a static Cloudflare Pages site.
 
-## Local development
+## Development and verification
+
+Use Node.js 22 (also specified in `.node-version`).
 
 ```sh
-npm install
+npm ci
 npm run dev
-```
-
-Open the local address printed by Next.js (normally http://localhost:3000).
-
-```sh
 npm run lint
-npx tsc --noEmit
 npm run build
+npm run preview
 ```
 
-## Structure
+`npm run build` generates responsive images, exports the site to `out/`, then
+checks routes, referenced assets and Cloudflare Pages file-size/count limits.
+The export finalizer also supplies flattened navigation-file aliases when building
+on Windows, to avoid a Next.js 16.4 static-export prefetch filename mismatch.
+`npm run preview` serves the exported files at http://127.0.0.1:3000, without a
+Next.js server. Stop development before previewing on the same port.
 
-- `app/page.tsx`: homepage, navigation, introduction, and contact/footer.
-- `app/globals.css`: design tokens, responsive composition, and reduced-motion styles.
-- `public/textures/canvas-weave.svg`: lightweight, seamless linen weave and fine grain beneath the paint; the texture is static and does not cover artwork or text.
-- `components/artwork-gallery.tsx`: gallery and native modal artwork viewer. Artwork cards show original-resolution images and catalogue details; the dedicated gallery entry opens the 3D room. Supports Escape, arrow keys, focus containment, and return focus.
-- `components/gallery-scene.tsx`: loads the 3D gallery only through the dedicated Enter the gallery button, with a normal-image fallback when WebGL 2 is unavailable.
-- `public/textures/gallery-quartz.webp`: generated ivory quartz-look porcelain for the 3D walls, with physically lit grain, mineral roughness variation, and a satin finish. Provenance and prompt: `docs/gallery-materials.md`.
-- `lib/gallery-room.ts`: Three.js room, individual spotlights, frame shadows, and a camera that pans between paintings. Images retain their original aspect ratios and relative pixel sizes scaled to fit the room; these display sizes are not real artwork dimensions. Reduced motion switches views immediately. Rendering runs on demand and GPU resources are disposed when the viewer closes.
-- `components/reveal.tsx`: progressive scroll animation using IntersectionObserver and the Web Animations API. Content is readable without JavaScript; reduced-motion preferences are respected.
-- `components/painted-text.tsx`: desktop hover/focus pigment effects; on touch devices the logo sweeps once on arrival and headings sweep once as they enter view. Touch links and cards have immediate press feedback. Reduced motion disables automatic sweeps and retains static press colors.
-- `components/use-touch-input.ts`: detects hover/pointer capability, including tablets, rather than relying on viewport width.
-- `components/touch-feedback.tsx`: passive pointer feedback for touch controls, cleared on release, cancellation, or scroll without delaying their actions.
-- `components/paint-background.tsx`: starts empty, then paints randomized textures across the background. Each stroke shifts color, rests, and fades out on its own timer. The center is more transparent to protect readability. Timers and animation pause in hidden tabs and under reduced motion; decorative layers cannot intercept clicks.
-- `lib/paint-strokes.ts`: per-visit RNG, full-background placement, stroke lifetimes, and a six-active-stroke limit (plus briefly fading layers).
-- `docs/paint-textures.md`: texture provenance, generation prompts, and animation tuning notes.
-- `content/artworks.ts`: typed artwork catalogue, actual source dimensions, and descriptive alternative text.
+## Cloudflare Pages deployment
 
-## Artwork assets
+Create a **Pages** project connected to this Git repository. Use these settings:
 
-The 17 high-resolution originals are in `public/artworks/`. The homepage shows the first three entries in `content/artworks.ts`; the Gallery page and 3D room use the complete catalogue.
+| Setting | Value |
+| --- | --- |
+| Root directory | Directory containing this package.json; `artist-portfolio` if the repository includes its parent folder, otherwise leave blank |
+| Framework preset | Next.js (Static HTML Export), or None with the settings below |
+| Build command | `npm run build` |
+| Build output directory | `out` |
+| Node version | `22` (`.node-version`, or set `NODE_VERSION=22`) |
 
-Edit each entry?s `title`, `description`, and `dimensions` in `content/artworks.ts`. They currently contain the literal placeholders `*Nombre*`, `*Descripcion*`, and `*Dimensiones*`. Update `alt` with a visual description for accessibility when final details are ready. `width` and `height` are the actual image pixel dimensions, not physical painting measurements.
+Use a Git-integrated Pages project for automatic builds on pushes. No deployment
+command, Worker, Next.js adapter, runtime secrets or paid image service is needed.
+For manual dashboard deployment, build locally and upload the contents of `out/`.
+Attach the final domain in the Pages project's Custom domains settings after
+checking the preview deployment. This repository preparation does not publish it.
 
-All paintings preserve their original aspect ratios without cropping. Next.js optimizes the original images for the homepage and catalogue. The 3D room uses orientation-corrected WebP copies in `public/gallery-artworks/`, up to 1600 pixels on the longest edge, to reduce GPU memory and download sizes. Originals remain unchanged. Regenerate these copies after replacing an image:
+## Routes and languages
+
+Spanish is the default: `/`, `/about`, `/gallery`.
+English: `/en`, `/en/about`, `/en/gallery`.
+
+`app/(spanish)` supplies Spanish route wrappers. The page components in
+`app/[lang]` are shared by both languages, and only English is exported through
+the dynamic language segment. All six routes are HTML files; no Proxy or
+server rewrite is needed. `public/_redirects` redirects the former `/es` URLs.
+A bilingual `404.html` handles unknown URLs with a real 404 on Pages.
+`public/_headers` sets static-asset caching and basic response headers.
+
+Update both versions when editing text. English UI translations are in
+`content/english.ts`, and artwork descriptions in `content/localized-artworks.ts`.
+Artwork titles remain in Spanish.
+
+## Artwork and image updates
+
+- Original paintings: `public/artworks/`.
+- Catalogue, prices, availability and physical dimensions: `content/artworks.ts`.
+- Hero artist photos: `public/images/`, selected in `components/hero-photos.tsx`.
+- Contacts: `content/contact.ts` (email, Instagram and WhatsApp).
+- 3D artwork textures: `public/gallery-artworks/`.
+
+After replacing artwork images, update their catalogue pixel dimensions and
+regenerate the 3D copies:
 
 ```sh
 node scripts/prepare-gallery-textures.mjs
+npm run build
 ```
 
-## Before launch
+Responsive WebP sizes are generated automatically before development and builds
+by `scripts/prepare-static-images.mjs`. They are ignored by Git and cached locally
+using source-content hashes. The `next/image` loader serves these static files;
+there is no `/_next/image` endpoint. The detail viewer still loads the original
+high-resolution painting. All derivatives retain their source aspect ratio.
+The brushstroke textures and their behavior are independent of this image step.
 
-- Confirm biography, artwork titles, and final copy with the artist.
-- Contact details are maintained in `content/contact.ts`: danielacarolinasalem@gmail.com and Instagram @artdsalem.
-- This visual prototype uses a mail link; it does not yet contain a contact form or email delivery backend.
-- Add the final domain and social sharing image to metadata when available.
+The site retains its intro collage, animated paintings, search, accessible artwork
+dialog, 3D gallery, hover effects, and reduced-motion support. Contact currently
+uses email and social links. A future email-sending form would need a separate
+service or endpoint.
 
-System serif and sans-serif fonts keep rendering independent of external font services. Motion powers the paint effects; entrance reveals use native browser APIs. Reduced-motion preferences stop pigment movement and retain a static hover color treatment. Forced-colors mode hides decorative pigment layers.
+## Before publishing
+
+Check both languages, mobile navigation, search, artwork details, sold labels,
+inquiry links and the 3D gallery on the Pages preview URL. Confirm final artwork
+information with the artist. Add the real domain/social sharing image to metadata
+when those are available. Keep originals under Cloudflare Pages' 25 MiB per-file
+limit; the build checks this and the free-plan 20,000-file limit.

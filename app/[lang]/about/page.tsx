@@ -54,7 +54,8 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: Lo
             <Reveal className="profile-chapter-heading"><p className="eyebrow text-ink">{t("02 / El gesto")}</p><h2 id="process-title" className="profile-heading font-display"><em>{t("Proceso Creativo.")}</em></h2><div className="profile-materials" aria-label={t("Materiales")}>Gesso<span aria-hidden="true" />{t("Acrílico")}<span aria-hidden="true" />{t("Gesto")}</div></Reveal>
             <Reveal className="profile-prose">
               <p>{t("Mediante la superposición de capas de gesso y acrílico, utilizo la mancha, la materia y la pincelada gestual como recursos de exploración e introspección. El color adquiere un papel fundamental en la construcción de cada obra, no solo como elemento compositivo, sino también como expresión de estados emocionales y huella de mi propio proceso creativo.")}</p>
-              <p>{t("La forma y el color se combinan para construir imágenes que reflejan una manera de sentir y entender lo que nos rodea. Las obras parten de experiencias personales, especialmente de la relación entre bienestar pleno y vivencias relacionadas con el dolor físico. Me interesa mostrar el proceso de transformación, la búsqueda de equilibrio, la fuerza y la esperanza, entendiendo el arte como un espacio donde estas experiencias pueden tomar otra forma.")}</p>
+              <p>{t("La forma y el color se combinan para crear imágenes que reflejan una manera personal de sentir y comprender el mundo que nos rodea. Mi trabajo explora el cambio y la transformación, dejando espacio a la espontaneidad de cada proceso creativo, más allá de la búsqueda de la perfección.")}</p>
+              <p>{t("A través de mis obras, busco transmitir equilibrio, fuerza y esperanza, entendiendo el arte como un medio para mostrar mi universo artístico.")}</p>
             </Reveal>
           </div>
         </section>

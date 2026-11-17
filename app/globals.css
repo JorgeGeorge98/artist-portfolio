@@ -164,7 +164,11 @@ a, button { touch-action: manipulation; }
 .artist-hero-eyebrow { font-size: 11px; line-height: 1.7; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
 .artist-hero-title { margin-top: 20px; font-size: clamp(44px, 4.4vw, 62px); font-weight: 400; line-height: 1.12; letter-spacing: -.055em; }
 .artist-hero-title em { color: var(--coral); font-weight: 400; }
-.artist-hero-title .hero-accent, .profile-name .hero-accent { color: #b89b1c; }
+.artist-hero-title, .artist-hero-title em,
+.profile-name, .profile-name .hero-accent,
+.artist-logo,
+.intro-name { color: #005565; }
+.artist-logo .text-accent, .intro-name .text-accent { color: var(--accent); }
 :is(.artist-hero-title, .profile-name) .equilibrium-pigment { display: inline-block; background-image: url('/textures/paint-grain.svg'), linear-gradient(110deg, var(--pigment-stops)); background-size: 160px 160px, 190% 100%; background-blend-mode: multiply; background-clip: text; -webkit-background-clip: text; color: transparent; -webkit-text-fill-color: transparent; animation: equilibrium-colors 18s ease-in-out infinite; padding-right: .06em; }
 :is(.artist-hero-title, .profile-name) .equilibrium-pigment {
   background-image: url('/textures/paint-grain.svg'), linear-gradient(90deg, var(--pigment-stops));
@@ -235,7 +239,6 @@ a, button { touch-action: manipulation; }
 .artwork-item-2 .artwork-mat { padding: 24px; background: var(--surface-cool); }
 .artwork-item-3 .artwork-mat { background: var(--surface-warm); }
 .artwork-image { transition: transform .55s cubic-bezier(.2,.7,.2,1), box-shadow .55s; }
-.catalogue-grid .artwork-button[data-sold="true"] .artwork-image { filter: grayscale(.65); opacity: .8; }
 .artwork-button:hover .artwork-image, .artwork-button:focus-visible .artwork-image { transform: translateY(-5px); box-shadow: 0 14px 20px -12px #263e3460; }
 .view-artwork { opacity: 0; transform: translateY(6px); transition: opacity .3s, transform .3s; }
 .artwork-button:hover .view-artwork, .artwork-button:focus-visible .view-artwork { opacity: 1; transform: translateY(0); }

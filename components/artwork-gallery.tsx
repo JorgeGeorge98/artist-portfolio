@@ -58,7 +58,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
     <>
       {catalogue && <>
         <div className="gallery-invitation">
-          <div><p className="eyebrow mb-3 text-[var(--panel-emphasis)]">{t("Otra perspectiva")}</p><h2 className="font-display text-3xl sm:text-4xl">{t("Adéntrate.")} <em>{t("Quédate un rato.")}</em></h2><p className="mt-3 max-w-100 text-sm leading-6 text-ink">{t("Descubre las pinturas en las paredes de una galería virtual tranquila y llena de luz.")}</p></div>
+          <div><p className="eyebrow mb-3 text-[var(--panel-emphasis)]">{t("Otra perspectiva")}</p><h2 className="font-display text-3xl sm:text-4xl">{t("Explora la galería virtual")}</h2><p className="mt-3 max-w-100 text-sm leading-6 text-ink">{t("Descubre las pinturas en las paredes de una galería virtual tranquila y llena de luz.")}</p></div>
           <button className="gallery-enter" onClick={() => openArtwork(0, "gallery")} aria-haspopup="dialog">{t("Entrar en la galería")} <Arrow /></button>
         </div>
         <div className="gallery-search-row">
@@ -72,7 +72,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
           <Reveal key={item.src} className={`artwork-item artwork-item-${index + 1}`}>
             <button className="artwork-button group w-full text-left" data-sold={catalogue && item.sold ? "true" : undefined} onClick={() => openArtwork(index)} aria-label={locale === "en" ? `View artwork ${index + 1}: ${item.title}${catalogue && item.sold ? ", sold" : ""}` : `Ver obra ${index + 1}: ${item.title}${catalogue && item.sold ? ", vendido" : ""} en el visor`} aria-haspopup="dialog">
               <div className="artwork-mat relative flex items-center justify-center">
-                {catalogue && item.sold && <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 bg-paper px-3 py-2 text-xs font-medium text-ink"><span className="h-2 w-2 rounded-full bg-terracotta" style={{ backgroundColor: "var(--terracotta)" }} aria-hidden="true" />{t("Vendido")}</span>}
+                {catalogue && item.sold && <span className="pointer-events-none absolute left-1/2 top-1/2 z-10 inline-flex -translate-x-1/2 -translate-y-1/2 items-center gap-2 bg-paper px-4 py-3 text-xs font-medium text-ink shadow-sm"><span className="h-2 w-2 rounded-full bg-terracotta" style={{ backgroundColor: "var(--terracotta)" }} aria-hidden="true" />{t("Vendido")}</span>}
                 <Image src={item.src} alt={item.alt} width={item.width} height={item.height} sizes={catalogue ? "(max-width: 639px) 85vw, (max-width: 1023px) 42vw, 28vw" : index === 1 ? "(max-width: 767px) 65vw, 27vw" : "(max-width: 767px) 80vw, 44vw"} className="artwork-image h-auto w-full" />
                 <span className="view-artwork absolute bottom-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-paper text-ink" aria-hidden="true"><Arrow diagonal /></span>
               </div>

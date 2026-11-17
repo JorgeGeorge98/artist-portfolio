@@ -4,6 +4,7 @@ import "../globals.css";
 import { notFound } from "next/navigation";
 import { LocaleProvider } from "@/components/locale-provider";
 import { isLocale } from "@/lib/i18n";
+import { siteUrl } from "@/lib/site-url";
 
 const sans = localFont({
   src: "../../public/fonts/dm-sans.ttf",
@@ -20,6 +21,7 @@ const display = localFont({
 });
 
 const spanishMetadata: Metadata = {
+  metadataBase: siteUrl,
   title: "Daniela Salem — Pintura contemporánea",
   description: "Explora las pinturas de Daniela Salem: un mundo de color expresivo, gestos intuitivos y formas inesperadas de mirar.",
   openGraph: {
@@ -41,6 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
   const { lang } = await params;
   if (lang !== "en") return spanishMetadata;
   return {
+    metadataBase: siteUrl,
     title: "Daniela Salem — Contemporary painting",
     description: "Explore Daniela Salem's paintings: a world of expressive colour, intuitive gestures and unexpected ways of seeing.",
     openGraph: { title: "Daniela Salem — Between emotion and colour", description: "Discover a collection of works by contemporary painter Daniela Salem.", type: "website", locale: "en_GB" },

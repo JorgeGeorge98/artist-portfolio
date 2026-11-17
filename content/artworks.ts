@@ -18,7 +18,7 @@ export type Artwork = {
 export const artworks: Artwork[] = [
   {
     "title": "Serenidad",
-    "description": "En mi obra exploro cómo el cuerpo y sus vivencias se transforman a través del color. Los tonos azules y el trazo gestual articulan un espacio dinámico donde las figuras se disuelven en el entorno, desplazando la carga del dolor físico hacia la calma, la quietud y el equilibrio.\n\nEn mis obras utilizo la pintura como un vehículo de resiliencia, comunicación y sanación volcado hacia la constante evolución y la esperanza.",
+    "description": "Reflejo de la estabilidad alcanzada tras una etapa de cambios y transición. El busto de perfil revela el paso del movimiento hacia un encuentro con el equilibrio y la calma.",
     "dimensions": "55 × 38 cm",
     "year": 2026,
     "price": 250,
@@ -30,7 +30,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Florecer y Renacer",
-    "description": "",
+    "description": "Florecer: Una invitación a nuevas experiencias y a la creación de un espacio lleno de sueños y ambiciones. Esta obra propone un punto de encuentro, inspiración y motivación donde la naturaleza y la figura humana se entrelazan.\n\nRenacer: Esta obra refleja el despertar de mi mundo interior y la fuerza para resurgir y reconstruir mis ambiciones y sueños. Nace desde la intención de dar vida a nuevas oportunidades, dejando atrás las inseguridades, los miedos y los bloqueos.",
     "dimensions": "60 × 30 cm cada obra",
     "year": 2026,
     "price": 200,
@@ -43,7 +43,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Percepción",
-    "description": "En mis obras se hacen visibles las capas, los gestos y las huellas que forman parte de mi manera de crear. Me alejo de la búsqueda de la perfección para encontrar una voz propia, un lenguaje que cobra vida a través del color y de trazos directos y espontáneos.",
+    "description": "La forma en que percibimos nuestro entorno está influenciada por nuestras experiencias y vivencias personales. El cuerpo se presenta con una mirada reflexiva e inmersiva, adentrándose en un espacio lleno de recuerdos emotivos, donde cada huella demuestra el paso del tiempo y la forma de sobrellevar lo vivido.",
     "dimensions": "60 × 60 cm",
     "year": 2026,
     "price": 260,
@@ -55,7 +55,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Presencia",
-    "description": "En mis obras se hacen visibles las capas, los gestos y las huellas que forman parte de mi manera de crear. Me alejo de la búsqueda de la perfección para encontrar una voz propia, un lenguaje que cobra vida a través del color y de trazos directos y espontáneos.",
+    "description": "Reflejo de un estado de cambio y movimiento donde cada vivencia forma parte de mi propia transformación. El gesto de la figura transmite la superación personal, recordando que el tiempo y la constancia son fundamentales en los días con menos fuerza y energía.",
     "dimensions": "50 × 40 cm",
     "year": 2026,
     "price": 210,
@@ -67,7 +67,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Reconocimiento",
-    "description": "En mis obras se hacen visibles las capas, los gestos y las huellas que forman parte de mi manera de crear. Me alejo de la búsqueda de la perfección para encontrar una voz propia, un lenguaje que cobra vida a través del color y de trazos directos y espontáneos.",
+    "description": "Un proceso de exploración interior que nos invita a reconocer y comprender nuestras emociones, estableciendo un diálogo con nosotros mismos en la búsqueda de equilibrio y armonía interior.",
     "dimensions": "40 × 50 cm",
     "year": 2026,
     "price": 190,
@@ -79,7 +79,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Introspección",
-    "description": "Esta serie explora la tensión entre la fortaleza exterior y la vulnerabilidad interna, confrontando los cánones de simetría de la escultura clásica griega con la vivencia corporal real. Al trascender la norma estética, la obra busca un equilibrio honesto entre la materia, el cuerpo y su constante transformación.",
+    "description": "Un espacio de cambio y transformación que surge ante situaciones de incertidumbre e inquietud. Un punto de inflexión en el que la mente y el alma entran en diálogo, dando paso a una mirada más profunda hacia nuestro interior.",
     "dimensions": "40 × 40 cm",
     "year": 2025,
     "price": 190,
@@ -91,7 +91,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Equilibrio",
-    "description": "Esta serie explora la tensión entre la fortaleza exterior y la vulnerabilidad interna, confrontando los cánones de simetría de la escultura clásica griega con la vivencia corporal real. Al trascender la norma estética, la obra busca un equilibrio honesto entre la materia, el cuerpo y su constante transformación.",
+    "description": "La búsqueda de un punto medio entre el ritmo de la vida cotidiana y la necesidad de encontrar calma. A través del yoga y la meditación, trabajamos la conexión entre cuerpo y mente, buscando un balance que nos permita mantenernos centrados y alcanzar una mayor estabilidad interior.",
     "dimensions": "40 × 30 cm",
     "year": 2025,
     "price": 150,
@@ -103,7 +103,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Impulso",
-    "description": "Esta serie explora la tensión entre la fortaleza exterior y la vulnerabilidad interna, confrontando los cánones de simetría de la escultura clásica griega con la vivencia corporal real. Al trascender la norma estética, la obra busca un equilibrio honesto entre la materia, el cuerpo y su constante transformación.",
+    "description": "Una fuerza interior que despierta el deseo de transformar aquello que nos rodea. Un impulso espontáneo que nace de nuestro mundo emocional y se manifiesta a través del cuerpo como una necesidad de cambio.",
     "dimensions": "50 × 70 cm",
     "year": 2025,
     "price": 270,
@@ -115,7 +115,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Memoria",
-    "description": "",
+    "description": "Una representación de todos esos recuerdos y experiencias que dejan huella en nuestras vidas. Desde los viajes y los momentos compartidos con nuestra familia hasta las personas que nos acompañan en las etapas difíciles y las vivencias que nos ayudan a crecer. Recuerdos que permanecen con nosotros, nos conectan con quienes fuimos y forman parte de nuestra historia.",
     "dimensions": "50 × 60 cm",
     "year": 2026,
     "price": 270,
@@ -127,7 +127,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Entrelazados",
-    "description": "En estas obras, el dibujo de las manos reemplaza a la palabra. La postura y el movimiento de las figuras articulan un diálogo directo sobre la empatía y la conexión humana.",
+    "description": "El pasado, el presente y el futuro están conectados y forman parte de nuestra historia. La obra representa la relación entre estas tres etapas y la importancia de encontrar un equilibrio entre ellas: aceptar lo que hemos vivido, aprender a disfrutar del presente y mirar al futuro sin dejar que la incertidumbre nos limite.",
     "dimensions": "50 × 50 cm",
     "year": 2026,
     "price": 250,
@@ -139,7 +139,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Reinterpretación de la creación",
-    "description": "En estas obras, el dibujo de las manos reemplaza a la palabra. La postura y el movimiento de las figuras articulan un diálogo directo sobre la empatía y la conexión humana.",
+    "description": "Una reflexión sobre el vínculo entre lo divino y lo humano, y la conexión con una fuerza que va más allá de nosotros mismos. Una búsqueda que nace de la necesidad de encontrar sentido, orientación y un punto de apoyo ante las incertidumbres y dificultades de la vida.",
     "dimensions": "28 × 35 cm",
     "year": 2023,
     "price": 130,
@@ -151,7 +151,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Ruina en movimiento",
-    "description": "Esta serie utiliza la metáfora de las ruinas para explorar cómo los recuerdos y las vivencias del pasado dejan una huella en nuestro presente. A través de estas formas, la obra reflexiona sobre la memoria, el paso del tiempo y la transformación personal.",
+    "description": "La ruina representa la huella de aquello que fue y que, de alguna manera, sigue presente en nosotros. Las experiencias que vivimos nos transforman y dejan una marca en nuestra historia personal, influyendo en nuestra manera de ser y de entender el mundo.",
     "dimensions": "40 × 40 cm",
     "year": 2026,
     "price": 110,
@@ -163,7 +163,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Transición",
-    "description": "Esta serie utiliza la metáfora de las ruinas para explorar cómo los recuerdos y las vivencias del pasado dejan una huella en nuestro presente. A través de estas formas, la obra reflexiona sobre la memoria, el paso del tiempo y la transformación personal.",
+    "description": "Un proceso de transformación personal marcado por las experiencias, las dificultades y la capacidad de seguir adelante. Una etapa en la que el dolor, la fatiga y el cansancio estuvieron presentes, pero no fueron un impedimento para avanzar. Aprender a convivir con las dificultades, superar los propios límites y encontrar nuevas formas de continuar.",
     "dimensions": "65 × 81 cm",
     "year": 2025,
     "price": 420,
@@ -175,7 +175,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Mirada interior",
-    "description": "Estas piezas abordan la mirada como un puente entre el entorno exterior y la vivencia personal. El dibujo de los ojos y los elementos naturales permite articular una forma propia de percibir el mundo, reconciliando lo que vemos con lo que sentimos a través del paisaje y la memoria.",
+    "description": "Una invitación a mirar hacia dentro, reconocer aquello que necesitamos cambiar o mejorar y entender mejor lo que sentimos. Un proceso personal en el que aprendemos a sanar heridas, perdonar y dejar atrás aquello que nos sigue afectando, para sentirnos mejor con nosotros mismos y encontrar un poco más de paz.",
     "dimensions": "50 × 70 cm",
     "year": 2024,
     "price": null,
@@ -188,7 +188,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Portal al alma",
-    "description": "Estas piezas abordan la mirada como un puente entre el entorno exterior y la vivencia personal. El dibujo de los ojos y los elementos naturales permite articular una forma propia de percibir el mundo, reconciliando lo que vemos con lo que sentimos a través del paisaje y la memoria.",
+    "description": "Una conexión con nuestra esencia y nuestra parte más sensible, con aquello que nos define y nos hace únicos. Una invitación a descubrir y aceptar quiénes somos, más allá de las expectativas y opiniones de los demás. Reconocer nuestra autenticidad y valorar aquello que nos diferencia.",
     "dimensions": "24 × 30 cm",
     "year": 2026,
     "price": 80,
@@ -200,7 +200,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Umbral",
-    "description": "",
+    "description": "Nuestra mirada influye en la forma en que vemos, interpretamos y entendemos lo que nos rodea. Cada persona percibe una misma situación de manera distinta, según sus experiencias y su forma de sentir. La obra invita a reflexionar sobre cómo nuestra manera de mirar puede cambiar la forma en que vivimos y damos sentido a las cosas.",
     "dimensions": "50 × 60 cm",
     "year": 2026,
     "price": 230,
@@ -212,7 +212,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Naturaleza efímera",
-    "description": "",
+    "description": "La naturaleza nos ofrece un espacio para alejarnos del ritmo del día a día y volver a conectar con nosotros mismos. A través de sus formas, colores y sensaciones, despierta nuestra parte más sensible y nos acerca a aquello que a veces dejamos de lado, nuestras emociones y nuestra esencia.",
     "dimensions": "70 × 50 cm",
     "year": 2026,
     "price": null,
@@ -225,7 +225,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Visión",
-    "description": "",
+    "description": "La mirada nos conecta con el mundo que nos rodea, con las personas y con las experiencias que forman parte de nuestra vida. Nuestra forma de percibir lo que sucede influye en cómo lo comprendemos, lo aceptamos y lo vivimos. La actitud con la que nos situamos ante cada situación puede cambiar nuestra perspectiva, ayudándonos a mantener la esperanza ante las dificultades y a seguir adelante sin perder de vista lo que realmente importa.",
     "dimensions": "50 × 70 cm",
     "year": 2026,
     "price": 250,
@@ -237,7 +237,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Diálogo entre miradas",
-    "description": "",
+    "description": "A lo largo de la vida atravesamos distintas etapas que dejan huella en nuestra forma de ser. La obra representa el encuentro entre diferentes versiones de nosotros mismos y cómo se relacionan a través de nuestras experiencias. Esta conexión también nos acerca a la naturaleza y a todo aquello que despierta nuestra sensibilidad, nos transmite calma y nos ayuda a reconocer quiénes somos más allá de lo vivido.",
     "dimensions": "40 × 60 cm",
     "year": 2026,
     "price": 180,
@@ -249,7 +249,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Armonía",
-    "description": "",
+    "description": "La búsqueda de un espacio de calma en el que alejarnos del ruido exterior y de los pensamientos que nos acompañan en el día a día. Un lugar donde poder detenernos, conectar con nosotros mismos y encontrar esa tranquilidad que nos permite sentirnos en sintonía con lo que somos.",
     "dimensions": "60 × 60 cm",
     "year": 2026,
     "price": 240,
@@ -261,7 +261,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Entre pétalos",
-    "description": "",
+    "description": "Estar rodeados de naturaleza nos permite desconectar del ritmo cotidiano y conectar con nuestras sensaciones. Los colores, las formas y los aromas de las flores despiertan nuestra sensibilidad y nos trasladan a un espacio diferente, donde podemos dejar de lado las preocupaciones y disfrutar de lo que nos rodea.",
     "dimensions": "35 × 27 cm",
     "year": 2026,
     "price": 120,
@@ -273,7 +273,7 @@ export const artworks: Artwork[] = [
   },
   {
     "title": "Viaje onírico",
-    "description": "",
+    "description": "Una conexión con nuestra parte más natural y sensible, donde podemos mostrarnos tal y como somos, sin máscaras ni apariencias. El cuerpo desnudo representa esa vulnerabilidad y la libertad de dejar atrás los miedos y las experiencias que nos han condicionado. La naturaleza nos acerca a esa parte más auténtica de nosotros mismos, donde podemos conectar con lo que sentimos y con quienes realmente somos.",
     "dimensions": "40 × 60 cm",
     "year": 2026,
     "price": 200,

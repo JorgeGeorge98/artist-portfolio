@@ -40,6 +40,12 @@ For manual dashboard deployment, build locally and upload the contents of `out/`
 Attach the final domain in the Pages project's Custom domains settings after
 checking the preview deployment. This repository preparation does not publish it.
 
+Set the build environment variable `SITE_URL` to the full production URL (including
+`https://`) for absolute Spanish/English SEO alternate links. Rebuild after changing
+the domain. Without it, builds use `CF_PAGES_URL` on Cloudflare, the Vercel production
+URL on Vercel, or localhost for local development. Set `SITE_URL` for local builds
+intended for manual upload too.
+
 ## Routes and languages
 
 Spanish is the default: `/`, `/about`, `/gallery`.

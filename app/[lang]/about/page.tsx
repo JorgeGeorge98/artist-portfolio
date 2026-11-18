@@ -78,7 +78,7 @@ export default async function AboutPage({ params }: { params: Promise<{ lang: Lo
           <Reveal>
             <ul className="divide-y divide-line">
               {[
-                { title: "Cafetería La Galería", detail: t("Exposición individual"), year: "2024–2025" },
+                { title: "Cafetería La Galería", detail: t("Exposición individual"), year: "2026" },
                 { title: "Academia de Arte IONA", detail: t("Exposición colectiva"), year: "2024–2025" },
                 { title: t("Exposición colectiva"), detail: t("Universidad de Salamanca · USAL"), year: "2018" },
                 { title: t("Exposición colectiva"), detail: "Venezuela · Club Puerto Azul", year: "2015" },

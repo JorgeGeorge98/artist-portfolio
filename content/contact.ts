@@ -1,6 +1,6 @@
 export const contact = {
-  email: "danielacarolinasalem@gmail.com",
-  emailHref: "mailto:danielacarolinasalem@gmail.com",
+  email: "artdsalem@gmail.com",
+  emailHref: "mailto:artdsalem@gmail.com",
   instagram: "@artdsalem",
   instagramHref: "https://www.instagram.com/artdsalem/",
   whatsapp: "+34 658 70 16 54",

@@ -5,9 +5,24 @@ const ART_SPACING = 4.1;
 const ART_HEIGHT = 1.65;
 const CAMERA_DISTANCE = 3.8;
 const LIGHT_FIXTURE_DEPTH = 0.85;
-// Keep high-resolution images at a gallery scale without treating pixels as real dimensions.
-// A shared scale preserves their relative image sizes until physical dimensions are supplied.
-const PIXELS_PER_UNIT = Math.max(...artworks.map((artwork) => Math.max(artwork.width, artwork.height))) / 2.1;
+// Enlarge all physical measurements equally for a more immersive display.
+const ART_DISPLAY_SCALE = 3;
+// Catalogue measurements may list either
+// side first, so use the photograph to determine the canvas orientation.
+const paintingSize = (artwork: (typeof artworks)[number]) => {
+  const measurements = artwork.dimensions.match(/([\d.,]+)\s*[×x]\s*([\d.,]+)\s*cm/i);
+  if (!measurements) throw new Error(`Missing physical dimensions for ${artwork.title}`);
+  const sides = measurements.slice(1, 3).map(value => Number(value.replace(",", ".")) / 100 * ART_DISPLAY_SCALE);
+  const shortSide = Math.min(...sides);
+  const longSide = Math.max(...sides);
+  // The shared photograph shows two 60 × 30 cm canvases side by side.
+  if (artwork.title === "Florecer y Renacer") {
+    return { width: shortSide * 2, height: longSide };
+  }
+  return artwork.width > artwork.height
+    ? { width: longSide, height: shortSide }
+    : { width: shortSide, height: longSide };
+};
 const artX = (index: number) => (index - (artworks.length - 1) / 2) * ART_SPACING;
 
 type Pan = { from: number; to: number; started: number; duration: number };
@@ -226,8 +241,7 @@ export class GalleryRoom {
     const loader = new THREE.TextureLoader(this.loading);
     const frame = new THREE.MeshStandardMaterial({ color: "#d7c5a6", roughness: 0.82 });
     artworks.forEach((artwork, index) => {
-      const width = artwork.width / PIXELS_PER_UNIT;
-      const height = artwork.height / PIXELS_PER_UNIT;
+      const { width, height } = paintingSize(artwork);
       const x = artX(index);
       this.box(width + 0.065, height + 0.065, 0.065, frame, x, ART_HEIGHT, 0.045).castShadow = true;
       const texture = loader.load(artwork.gallerySrc, () => {
@@ -255,7 +269,7 @@ export class GalleryRoom {
     if (!width || !height) return;
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    const widest = Math.max(...artworks.map((artwork) => artwork.width / PIXELS_PER_UNIT));
+    const widest = Math.max(...artworks.map((artwork) => paintingSize(artwork).width));
     this.distance = Math.max(CAMERA_DISTANCE, (widest + 0.45) / (2 * Math.tan(THREE.MathUtils.degToRad(24)) * this.camera.aspect));
     // Leave headroom above the projecting lamp, including in wide desktop views.
     // Move the camera and its target together to keep paintings straight-on.

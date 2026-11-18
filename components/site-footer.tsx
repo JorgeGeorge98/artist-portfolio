@@ -18,6 +18,17 @@ export function SiteFooter({ backToTop = false }: { backToTop?: boolean }) {
           {backToTop && <a href="#" className="text-link inline-flex min-h-11 min-w-11 items-center justify-center" aria-label={t("Volver al inicio")}><Arrow className="-rotate-90" /></a>}
         </div>
       </div>
+      <p className="mt-4 flex flex-wrap items-center gap-x-1 text-xs text-muted">
+        <span>{t("Desarrollado y Diseñado por")}</span>
+        <a
+          href="https://www.linkedin.com/in/jorge-javitt-b71124265/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-link inline-flex min-h-11 items-center gap-1.5"
+        >
+          Jorge Javitt<Arrow diagonal className="!h-3 !w-3" />
+        </a>
+      </p>
     </footer>
   );
 }

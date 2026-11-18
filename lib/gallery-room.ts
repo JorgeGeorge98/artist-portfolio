@@ -1,336 +1,345 @@
 import * as THREE from "three";
 import { artworks } from "@/content/artworks";
 
-const ART_SPACING = 4.1;
-const ART_HEIGHT = 1.65;
-const CAMERA_DISTANCE = 3.8;
-const LIGHT_FIXTURE_DEPTH = 0.85;
-// Enlarge all physical measurements equally for a more immersive display.
-const ART_DISPLAY_SCALE = 3;
-// Catalogue measurements may list either
-// side first, so use the photograph to determine the canvas orientation.
+const SPACING = 6.8;
+const ART_HEIGHT = 1.8;
+const artX = (index: number) => index * SPACING;
+// Physical dimensions, enlarged equally by 3 for the exhibition.
 const paintingSize = (artwork: (typeof artworks)[number]) => {
-  const measurements = artwork.dimensions.match(/([\d.,]+)\s*[×x]\s*([\d.,]+)\s*cm/i);
-  if (!measurements) throw new Error(`Missing physical dimensions for ${artwork.title}`);
-  const sides = measurements.slice(1, 3).map(value => Number(value.replace(",", ".")) / 100 * ART_DISPLAY_SCALE);
-  const shortSide = Math.min(...sides);
-  const longSide = Math.max(...sides);
-  // The shared photograph shows two 60 × 30 cm canvases side by side.
-  if (artwork.title === "Florecer y Renacer") {
-    return { width: shortSide * 2, height: longSide };
-  }
-  return artwork.width > artwork.height
-    ? { width: longSide, height: shortSide }
-    : { width: shortSide, height: longSide };
+  const match = artwork.dimensions.match(/([\d.,]+)\s*[×x]\s*([\d.,]+)\s*cm/i);
+  if (!match) throw new Error(`Missing dimensions: ${artwork.title}`);
+  const sides = match.slice(1, 3).map(value => Number(value.replace(",", ".")) * 0.03);
+  const short = Math.min(...sides), long = Math.max(...sides);
+  if (artwork.title === "Florecer y Renacer") return { width: short * 2, height: long };
+  return artwork.width > artwork.height ? { width: long, height: short } : { width: short, height: long };
 };
-const artX = (index: number) => (index - (artworks.length - 1) / 2) * ART_SPACING;
-
-type Pan = { from: number; to: number; started: number; duration: number };
-type RoomOptions = { locale?: "es" | "en"; onReady: () => void; onError: () => void };
+type Pan = { from: number; to: number; started: number; duration: number; entry?: boolean };
+type Options = {
+  reducedMotion: boolean;
+  onReady: () => void;
+  onError: () => void;
+  onFrame: (bounds: { left: number; right: number; top: number; moving: boolean }) => void;
+};
 
 export class GalleryRoom {
   private scene = new THREE.Scene();
-  private camera = new THREE.PerspectiveCamera(48, 1, 0.08, 60);
+  private camera = new THREE.PerspectiveCamera(44, 1, 0.08, 65);
   private renderer: THREE.WebGLRenderer;
   private observer: ResizeObserver;
   private textures = new Set<THREE.Texture>();
+  private materials: THREE.MeshPhysicalMaterial[] = [];
+  private loaded = new Map<number, THREE.Texture>();
+  private previews = new Map<number, THREE.Texture>();
+  private pending = new Set<number>();
   private lights: THREE.SpotLight[] = [];
-  private loading = new THREE.LoadingManager();
-  private labels: { mesh: THREE.Mesh; x: number; artWidth: number; artHeight: number }[] = [];
   private disposed = false;
   private frame = 0;
   private pan: Pan | null = null;
   private focusX: number;
-  private distance = CAMERA_DISTANCE;
-  private cameraHeight = ART_HEIGHT;
+  private distance = 4.5;
   private selected: number;
+  private ready = false;
+  private overview = false;
+  private viewMix = 0;
+  private lastFrame = 0;
+  private driftTime = 0;
+  private driftAmount = 0;
 
-  constructor(private host: HTMLElement, index: number, private options: RoomOptions, canvas: HTMLCanvasElement) {
+  constructor(private host: HTMLElement, index: number, private options: Options, canvas: HTMLCanvasElement) {
     this.selected = index;
     this.focusX = artX(index);
     this.renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false, powerPreference: "low-power" });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    this.renderer.toneMappingExposure = 1;
-    this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap;
-    this.renderer.shadowMap.autoUpdate = false;
-    this.renderer.domElement.setAttribute("aria-hidden", "true");
-    this.renderer.domElement.addEventListener("webglcontextlost", this.contextLost);
-    this.host.append(this.renderer.domElement);
-
-    this.scene.background = new THREE.Color("#e6e2d9");
-    this.scene.fog = new THREE.Fog("#e6e2d9", 14, 35);
-    this.loading.onLoad = () => { if (!this.disposed) this.options.onReady(); };
+    this.renderer.toneMappingExposure = 1.05;
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.addEventListener("webglcontextlost", this.contextLost);
+    host.append(canvas);
+    this.scene.background = new THREE.Color("#e9e9e1");
+    this.scene.fog = new THREE.Fog("#e9e9e1", 19, 58);
     this.buildArchitecture();
     this.buildPaintings();
     this.observer = new ResizeObserver(this.resize);
-    this.observer.observe(this.host);
+    this.observer.observe(host);
     document.addEventListener("visibilitychange", this.visibilityChanged);
     this.resize();
+    this.loadNearby();
   }
 
-  private box(width: number, height: number, depth: number, material: THREE.Material, x: number, y: number, z: number) {
-    const mesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), material);
+  private box(w: number, h: number, d: number, material: THREE.Material, x: number, y: number, z: number) {
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
     mesh.position.set(x, y, z);
-    mesh.receiveShadow = true;
     this.scene.add(mesh);
     return mesh;
   }
 
-  private surfaceTexture() {
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = 256;
-    const context = canvas.getContext("2d");
-    if (!context) return null;
-    const pixels = context.createImageData(256, 256);
-    let seed = 71;
-    for (let i = 0; i < pixels.data.length; i += 4) {
-      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
-      const grain = 222 + (seed % 23);
-      pixels.data.set([grain, grain, grain, 255], i);
+  private buildArchitecture() {
+    const length = artworks.length * SPACING + 12;
+    const centre = (artworks.length - 1) * SPACING / 2;
+    const wall = new THREE.MeshStandardMaterial({ color: "#ffffff", roughness: 0.86 });
+    const stone = new THREE.TextureLoader().load("/textures/gallery-quartz.webp", texture => {
+      if (this.disposed) { texture.dispose(); return; }
+      this.requestRender();
+    }, undefined, () => { wall.map = null; wall.needsUpdate = true; this.requestRender(); });
+    stone.colorSpace = THREE.SRGBColorSpace;
+    stone.wrapS = stone.wrapT = THREE.RepeatWrapping;
+    stone.repeat.set(length / 4, 1.3);
+    wall.map = stone;
+    this.textures.add(stone);
+    const floor = new THREE.MeshStandardMaterial({ color: "#d2c9b6", roughness: 0.57, metalness: 0.04 });
+    const chalk = new THREE.MeshStandardMaterial({ color: "#f4f1e8", roughness: 0.9, emissive: "#e5e8e0", emissiveIntensity: 0.15 });
+    const bronze = new THREE.MeshStandardMaterial({ color: "#6d726c", roughness: 0.42, metalness: 0.45 });
+    this.box(length, 5.1, 0.2, wall, centre, 2.55, -0.14);
+    this.box(length, 0.12, 7.8, floor, centre, -0.06, 3.8);
+    this.box(length, 0.15, 7.8, chalk, centre, 5.15, 3.8);
+    this.box(0.15, 5.1, 7.8, chalk, -9, 2.55, 3.8);
+    this.box(0.15, 5.1, 7.8, chalk, centre + length / 2, 2.55, 3.8);
+    this.box(length, 0.06, 0.06, bronze, centre, 0.03, 0.01);
+    // Glazed facade opposite the paintings, without an expensive refraction pass.
+    const glass = new THREE.MeshStandardMaterial({ color: "#b6d8d6", transparent: true, opacity: 0.16, roughness: 0.18, metalness: 0.25, depthWrite: false, side: THREE.DoubleSide });
+    this.box(length + 8, 12, 0.1, new THREE.MeshBasicMaterial({ color: "#dae6e4", fog: false, toneMapped: false }), centre, 5, 9);
+    this.box(length + 8, 0.7, 0.1, new THREE.MeshBasicMaterial({ color: "#b9c5b3" }), centre, 0.25, 8.8);
+    this.box(length, 4.8, 0.025, glass, centre, 2.55, 7.3);
+    this.box(length, 0.065, 0.08, bronze, centre, 3.6, 7.3);
+    this.box(length, 0.1, 0.12, bronze, centre, 0.15, 7.3);
+    const joints = new THREE.MeshBasicMaterial({ color: "#bcb5a7" });
+    const sunlight = new THREE.MeshBasicMaterial({ color: "#fff4ca", transparent: true, opacity: 0.29, depthWrite: false, side: THREE.DoubleSide });
+    const shadow = new THREE.MeshBasicMaterial({ color: "#7b837e", transparent: true, opacity: 0.12, depthWrite: false, side: THREE.DoubleSide });
+    for (let x = -7; x < length - 9; x += 3.4) {
+      this.box(0.065, 5.1, 0.1, bronze, x, 2.55, 7.3);
+      this.box(0.007, 0.003, 7.4, joints, x, 0.003, 3.7);
+      // Static sun patches and mullion shadows avoid continuous shadow rendering.
+      const patch = new THREE.Mesh(new THREE.PlaneGeometry(2.9, 6.3), sunlight);
+      patch.rotation.set(-Math.PI / 2, 0, -0.28);
+      patch.position.set(x - 1, 0.008, 4.1);
+      this.scene.add(patch);
+      const line = new THREE.Mesh(new THREE.PlaneGeometry(0.08, 7), shadow);
+      line.rotation.copy(patch.rotation);
+      line.position.set(x + 0.55, 0.012, 3.9);
+      this.scene.add(line);
     }
-    context.putImageData(pixels, 0, 0);
-    const texture = new THREE.CanvasTexture(canvas);
+    for (const z of [1.8, 3.6, 5.4]) this.box(length, 0.003, 0.007, joints, centre, 0.003, z);
+    const oak = new THREE.MeshStandardMaterial({ color: "#ab8961", roughness: 0.77 });
+    for (let i = 1; i < artworks.length; i += 4) {
+      this.box(2.1, 0.12, 0.6, oak, artX(i) + 3.4, 0.5, 5.5);
+      for (const offset of [-0.8, 0.8]) this.box(0.06, 0.45, 0.45, bronze, artX(i) + 3.4 + offset, 0.23, 5.5);
+    }
+    this.scene.add(new THREE.HemisphereLight("#f5f8f4", "#b2a38c", 2));
+    const sun = new THREE.DirectionalLight("#fff7e8", 1.7);
+    sun.position.set(-12, 10, 7);
+    this.scene.add(sun);
+  }
+
+  private canvasRelief() {
+    const size = 256;
+    const pixels = new Uint8Array(size * size * 4);
+    for (let y = 0; y < size; y++) {
+      for (let x = 0; x < size; x++) {
+        // A seamless woven surface, with slight irregularity in the threads.
+        const warp = Math.cos(x * Math.PI / 4);
+        const weft = Math.cos(y * Math.PI / 4);
+        const grain = Math.sin(x * Math.PI / 16 + Math.sin(y * Math.PI / 32)) * 0.12;
+        const value = Math.round(128 + 33 * warp + 33 * weft + 18 * warp * weft + 25 * grain);
+        const offset = (y * size + x) * 4;
+        pixels.set([value, value, value, 255], offset);
+      }
+    }
+    const texture = new THREE.DataTexture(pixels, size, size);
     texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.set(8, 4);
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearMipmapLinearFilter;
+    texture.generateMipmaps = true;
+    texture.anisotropy = Math.min(4, this.renderer.capabilities.getMaxAnisotropy());
+    texture.needsUpdate = true;
     this.textures.add(texture);
     return texture;
   }
 
-  private buildArchitecture() {
-    const roomWidth = artworks.length * ART_SPACING + 3.8;
-    const grain = this.surfaceTexture();
-    const wall = new THREE.MeshPhysicalMaterial({
-      color: "#ffffff",
-      roughness: 0.68,
-      metalness: 0,
-      bumpMap: grain,
-      bumpScale: 0.006,
-      clearcoat: 0.12,
-      clearcoatRoughness: 0.65,
-    });
-    const stone = new THREE.TextureLoader(this.loading).load("/textures/gallery-quartz.webp", (loaded) => {
-      if (this.disposed) return;
-      // Clone data maps only once image pixels exist, before the ready state clears.
-      const mineralRoughness = loaded.clone();
-      mineralRoughness.colorSpace = THREE.NoColorSpace;
-      mineralRoughness.needsUpdate = true;
-      wall.roughnessMap = mineralRoughness;
-      wall.needsUpdate = true;
-      this.textures.add(mineralRoughness);
-      this.requestRender();
-    }, undefined, () => {
-      if (this.disposed) return;
-      wall.map = wall.roughnessMap = null;
-      wall.needsUpdate = true;
-      this.requestRender();
-    });
-    stone.colorSpace = THREE.SRGBColorSpace;
-    stone.wrapS = stone.wrapT = THREE.RepeatWrapping;
-    stone.repeat.set(roomWidth / 3.2, 4.2 / 3.2);
-    stone.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
-    wall.map = stone;
-    this.textures.add(stone);
-    const floor = new THREE.MeshStandardMaterial({ color: "#c6c2b8", roughness: 0.8, metalness: 0.025, bumpMap: grain, bumpScale: 0.004 });
-    const ceiling = new THREE.MeshStandardMaterial({ color: "#faf9f5", roughness: 0.96 });
-    const dark = new THREE.MeshStandardMaterial({ color: "#353735", roughness: 0.65 });
-    this.box(roomWidth, 4.2, 0.2, wall, 0, 2.1, -0.12);
-    this.box(roomWidth, 0.12, 11, floor, 0, -0.06, 5.4);
-    this.box(roomWidth, 0.1, 11, ceiling, 0, 4.25, 5.4);
-    this.box(0.15, 4.2, 11, wall, -roomWidth / 2, 2.1, 5.4);
-    this.box(0.15, 4.2, 11, wall, roomWidth / 2, 2.1, 5.4);
-    this.box(roomWidth, 0.065, 0.045, new THREE.MeshStandardMaterial({ color: "#e1ddd3", roughness: 0.9 }), 0, 0.035, 0.015);
-    this.box(roomWidth - 0.6, 0.035, 0.04, dark, 0, 3.35, 0.035);
-
-    // Fine floor joints and a low bench give the camera pan spatial context.
-    const joint = new THREE.MeshStandardMaterial({ color: "#b8b3aa", roughness: 1 });
-    for (let x = -6; x <= 6; x += 3) this.box(0.008, 0.002, 11, joint, x, 0.002, 5.4);
-    for (let z = 2; z < 11; z += 3) this.box(roomWidth, 0.002, 0.008, joint, 0, 0.002, z);
-    const oak = new THREE.MeshStandardMaterial({ color: "#bca17b", roughness: 0.8 });
-    const bench = this.box(1.65, 0.085, 0.48, oak, 2.15, 0.48, 2.6);
-    bench.castShadow = true;
-    for (const x of [1.53, 2.77]) this.box(0.045, 0.44, 0.32, dark, x, 0.22, 2.6).castShadow = true;
-
-    this.scene.add(new THREE.HemisphereLight("#fffaf0", "#b3aca0", 1.7));
-    const daylight = new THREE.DirectionalLight("#edf4ff", 1.6);
-    daylight.position.set(-5, 6, 8);
-    this.scene.add(daylight);
-  }
-
-  private addSpotlight(x: number) {
-    const position = new THREE.Vector3(x, 3.1, LIGHT_FIXTURE_DEPTH);
-    const target = new THREE.Vector3(x, ART_HEIGHT - 0.05, 0);
-    const direction = target.clone().sub(position).normalize();
-    const metal = new THREE.MeshStandardMaterial({ color: "#303331", roughness: 0.6, metalness: 0.25 });
-    const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.85, 8), metal);
-    arm.position.set(x, 3.24, 0.45);
-    arm.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), position.clone().sub(new THREE.Vector3(x, 3.35, 0)).normalize());
-    this.scene.add(arm);
-    const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.19, 20), metal);
-    lamp.position.copy(position);
-    lamp.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
-    this.scene.add(lamp);
-    const lens = new THREE.Mesh(new THREE.CircleGeometry(0.053, 20), new THREE.MeshBasicMaterial({ color: "#fff0c9", toneMapped: false }));
-    lens.position.copy(position).addScaledVector(direction, 0.097);
-    lens.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), direction);
-    this.scene.add(lens);
-
-    const light = new THREE.SpotLight("#fff0d6", 25, 7, 0.69, 0.82, 2);
-    light.position.copy(position).addScaledVector(direction, 0.11);
-    light.target.position.copy(target);
-    light.castShadow = true;
-    light.shadow.mapSize.set(1024, 1024);
-    light.shadow.camera.near = 0.1;
-    light.shadow.camera.far = 7;
-    light.shadow.bias = -0.00015;
-    light.shadow.normalBias = 0.015;
-    this.scene.add(light, light.target);
-    this.lights.push(light);
-  }
-
-  private addLabel(index: number, x: number, width: number, height: number) {
-    const canvas = document.createElement("canvas");
-    canvas.width = 1024;
-    canvas.height = 320;
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    context.fillStyle = "#f2faf4";
-    context.fillRect(0, 0, canvas.width, canvas.height);
-    context.strokeStyle = "#bed8c9";
-    context.lineWidth = 4;
-    context.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
-    context.fillStyle = "#103f3d";
-    context.font = "600 86px Arial";
-    const title = `${String(index + 1).padStart(2, "0")}  /  ${artworks[index].title}`;
-    const titleSize = Math.min(86, 86 * 904 / context.measureText(title).width);
-    context.font = `600 ${titleSize}px Arial`;
-    context.fillText(title, 60, 122);
-    context.fillStyle = "#486861";
-    context.font = "62px Arial";
-    context.fillText(`${this.options.locale === "en" ? artworks[index].dimensions.replace("cada obra", "each artwork") : artworks[index].dimensions}${artworks[index].year ? ` · ${artworks[index].year}` : ""}`, 60, 242);
-    const texture = new THREE.CanvasTexture(canvas);
-    texture.colorSpace = THREE.SRGBColorSpace;
-    texture.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
-    this.textures.add(texture);
-    const label = new THREE.Mesh(new THREE.PlaneGeometry(1, 320 / 1024), new THREE.MeshBasicMaterial({ map: texture, toneMapped: false }));
-    this.labels.push({ mesh: label, x, artWidth: width, artHeight: height });
-    this.scene.add(label);
-  }
-
-  private layoutLabels(viewportWidth: number) {
-    const visibleWidth = 2 * this.distance * Math.tan(THREE.MathUtils.degToRad(24)) * this.camera.aspect;
-    // Keep text at a readable screen size without backing the camera away from the artwork.
-    const width = Math.max(0.88, 200 * visibleWidth / viewportWidth);
-    const height = width * 320 / 1024;
-    for (const label of this.labels) {
-      label.mesh.scale.set(width, width, 1);
-      const fitsBeside = label.artWidth / 2 + 0.18 + width < visibleWidth / 2 - 0.08;
-      label.mesh.position.set(
-        fitsBeside ? label.x + label.artWidth / 2 + 0.18 + width / 2 : label.x,
-        fitsBeside
-          ? ART_HEIGHT - label.artHeight / 2 + height / 2 + 0.04
-          : Math.max(0.08 + height / 2, ART_HEIGHT - label.artHeight / 2 - 0.12 - height / 2),
-        0.002,
-      );
-    }
-  }
-
   private buildPaintings() {
-    const loader = new THREE.TextureLoader(this.loading);
-    const frame = new THREE.MeshStandardMaterial({ color: "#d7c5a6", roughness: 0.82 });
+    const relief = this.canvasRelief();
+    const frame = new THREE.MeshStandardMaterial({ color: "#b99b71", roughness: 0.68, metalness: 0.12 });
+    const metal = new THREE.MeshStandardMaterial({ color: "#444a46", roughness: 0.5, metalness: 0.3 });
+    const glow = new THREE.MeshBasicMaterial({ color: "#fff1ce" });
+    const shadow = new THREE.MeshBasicMaterial({ color: "#655f51", transparent: true, opacity: 0.12 });
     artworks.forEach((artwork, index) => {
       const { width, height } = paintingSize(artwork);
       const x = artX(index);
-      this.box(width + 0.065, height + 0.065, 0.065, frame, x, ART_HEIGHT, 0.045).castShadow = true;
-      const texture = loader.load(artwork.gallerySrc, () => {
-        if (this.disposed) { texture.dispose(); return; }
-        this.requestRender();
-      }, undefined, () => { if (!this.disposed) this.options.onError(); });
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.anisotropy = Math.min(8, this.renderer.capabilities.getMaxAnisotropy());
-      this.textures.add(texture);
-      // Preserve the source paintings' colors; the surrounding frame and wall receive the light.
-      const material = new THREE.MeshBasicMaterial({ map: texture, toneMapped: false });
+      this.box(width + 0.12, height + 0.12, 0.008, shadow, x + 0.035, ART_HEIGHT - 0.035, -0.025);
+      this.box(width + 0.055, height + 0.055, 0.07, frame, x, ART_HEIGHT, 0.03);
+      const surface = relief.clone();
+      // Keep the weave density consistent across differently sized canvases.
+      surface.repeat.set(width * 3, height * 3);
+      surface.needsUpdate = true;
+      this.textures.add(surface);
+      const material = new THREE.MeshPhysicalMaterial({
+        color: "#ded7c9",
+        roughness: 0.78,
+        metalness: 0,
+        bumpMap: surface,
+        bumpScale: 0.0015,
+        clearcoat: 0.3,
+        clearcoatRoughness: 0.42,
+      });
       const painting = new THREE.Mesh(new THREE.PlaneGeometry(width, height), material);
-      painting.position.set(x, ART_HEIGHT, 0.08);
+      painting.position.set(x, ART_HEIGHT, 0.071);
+      this.materials.push(material);
       this.scene.add(painting);
-      this.addLabel(index, x, width, height);
-      this.addSpotlight(x);
+      this.box(1.2, 0.035, 0.04, metal, x, 4.2, 0.08);
+      this.box(0.025, 0.025, 0.65, metal, x, 4.2, 0.4);
+      this.box(0.17, 0.1, 0.23, metal, x, 4.17, 0.73);
+      this.box(0.13, 0.008, 0.18, glow, x, 4.114, 0.73);
+      const light = new THREE.SpotLight("#fff1d6", 15, 6, 0.76, 0.9, 2);
+      light.position.set(x, 4.1, 0.75);
+      light.target.position.set(x, ART_HEIGHT, 0);
+      light.visible = false;
+      this.scene.add(light, light.target);
+      this.lights.push(light);
     });
-    this.renderer.shadowMap.needsUpdate = true;
+  }
+
+  private loadNearby() {
+    // Evict distant textures so memory stays bounded throughout a complete tour.
+    for (const [index, texture] of this.loaded) {
+      if (Math.abs(index - this.selected) > 4) {
+        this.materials[index].map = this.previews.get(index) ?? null;
+        this.materials[index].color.set(this.previews.has(index) ? "#ffffff" : "#ded7c9");
+        this.materials[index].needsUpdate = true;
+        texture.dispose();
+        this.loaded.delete(index);
+      }
+    }
+    for (const offset of [0, -1, 1, -2, 2]) {
+      const index = this.selected + offset;
+      if (!artworks[index] || this.loaded.has(index) || this.pending.has(index)) continue;
+      this.pending.add(index);
+      new THREE.TextureLoader().load(artworks[index].gallerySrc, texture => {
+        this.pending.delete(index);
+        if (this.disposed || Math.abs(index - this.selected) > 4) { texture.dispose(); return; }
+        texture.colorSpace = THREE.SRGBColorSpace;
+        texture.anisotropy = Math.min(4, this.renderer.capabilities.getMaxAnisotropy());
+        this.loaded.set(index, texture);
+        this.materials[index].map = texture;
+        this.materials[index].color.set("#ffffff");
+        this.materials[index].needsUpdate = true;
+        if (index === this.selected) this.paintingReady();
+        this.requestRender();
+      }, undefined, () => {
+        this.pending.delete(index);
+        if (!this.disposed && index === this.selected) this.options.onError();
+      });
+    }
+    if (this.loaded.has(this.selected)) this.paintingReady();
+  }
+
+  private paintingReady() {
+    if (!this.ready) {
+      this.ready = true;
+      // Small previews fill the distant corridor after the first painting is ready.
+      // Two sequential queues avoid a burst of full-resolution texture downloads.
+      void this.loadPreviews(0);
+      void this.loadPreviews(1);
+      if (!this.options.reducedMotion) this.pan = { from: this.focusX - 0.65, to: this.focusX, started: performance.now(), duration: 2400, entry: true };
+    }
+    this.options.onReady();
+  }
+
+  private async loadPreviews(start: number) {
+    const loader = new THREE.TextureLoader();
+    for (let index = start; index < artworks.length && !this.disposed; index += 2) {
+      try {
+        const texture = await loader.loadAsync(encodeURI(`/optimized${artworks[index].src}/320.webp`));
+        if (this.disposed) { texture.dispose(); return; }
+        texture.colorSpace = THREE.SRGBColorSpace;
+        this.previews.set(index, texture);
+        if (!this.loaded.has(index)) {
+          this.materials[index].map = texture;
+          this.materials[index].color.set("#ffffff");
+          this.materials[index].needsUpdate = true;
+          this.requestRender();
+        }
+      } catch { /* A failed distant preview does not interrupt the selected artwork. */ }
+    }
   }
 
   private resize = () => {
     if (this.disposed) return;
-    const width = this.host.clientWidth;
-    const height = this.host.clientHeight;
+    const width = this.host.clientWidth, height = this.host.clientHeight;
     if (!width || !height) return;
+    const compact = width < 900;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, compact ? 1.35 : 1.75));
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
-    const widest = Math.max(...artworks.map((artwork) => paintingSize(artwork).width));
-    this.distance = Math.max(CAMERA_DISTANCE, (widest + 0.45) / (2 * Math.tan(THREE.MathUtils.degToRad(24)) * this.camera.aspect));
-    // Leave headroom above the projecting lamp, including in wide desktop views.
-    // Move the camera and its target together to keep paintings straight-on.
-    this.cameraHeight = Math.max(ART_HEIGHT, 3.3 - (this.distance - LIGHT_FIXTURE_DEPTH) * Math.tan(THREE.MathUtils.degToRad(this.camera.fov / 2)));
-    this.layoutLabels(width);
+    const sizes = artworks.map(paintingSize);
+    const tangent = Math.tan(THREE.MathUtils.degToRad(22));
+    this.distance = Math.max(4.05, Math.max(...sizes.map(size => size.width)) / (2 * tangent * this.camera.aspect * (compact ? 0.8 : 0.42)), Math.max(...sizes.map(size => size.height)) / (2 * tangent * 0.72));
     this.renderer.setSize(width, height, false);
     this.requestRender();
   };
 
   select(index: number, immediate = false) {
     if (this.disposed) return;
-    const x = artX(index);
+    this.options.reducedMotion = immediate;
+    this.overview = false;
+    const changed = index !== this.selected;
+    const jump = Math.abs(index - this.selected) > 3;
     this.selected = index;
-    if (immediate || Math.abs(x - this.focusX) <= 0.001) {
-      this.focusX = x;
-      this.pan = null;
-    } else {
-      this.pan = { from: this.focusX, to: x, started: performance.now(), duration: Math.min(1900, 1150 + Math.abs(x - this.focusX) * 65) };
-    }
+    const x = artX(index);
+    if (immediate) { this.focusX = x; this.pan = null; }
+    else if (changed) this.pan = { from: jump ? x - 2 : this.focusX, to: x, started: performance.now(), duration: jump ? 1250 : Math.min(2100, 1250 + Math.abs(x - this.focusX) * 25) };
+    this.loadNearby();
+    this.requestRender();
+  }
+
+  setOverview(overview: boolean) {
+    this.overview = overview;
     this.requestRender();
   }
 
   private requestRender = () => {
     if (!this.disposed && !this.frame && !document.hidden) this.frame = requestAnimationFrame(this.render);
   };
-
   private render = (now: number) => {
     this.frame = 0;
     if (this.disposed || document.hidden) return;
-    let pullback = 0;
+    const delta = Math.min((now - this.lastFrame) / 1000, 0.05);
+    this.lastFrame = now;
+    const targetMix = this.overview ? 1 : 0;
+    this.viewMix = this.options.reducedMotion ? targetMix : THREE.MathUtils.damp(this.viewMix, targetMix, 5, delta);
+    if (Math.abs(this.viewMix - targetMix) < 0.001) this.viewMix = targetMix;
+    let arc = 0, lookAhead = 0, lookZ = 0;
     if (this.pan) {
       const t = Math.min(1, (now - this.pan.started) / this.pan.duration);
-      const eased = t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
+      const eased = t * t * t * (t * (t * 6 - 15) + 10);
       this.focusX = THREE.MathUtils.lerp(this.pan.from, this.pan.to, eased);
-      pullback = Math.sin(t * Math.PI) * 0.38;
+      arc = Math.sin(t * Math.PI);
+      lookAhead = this.pan.entry ? (1 - eased) * 0.18 : 0;
+      lookZ = this.pan.entry ? (1 - eased) * 0.08 : 0;
       if (t === 1) this.pan = null;
     }
-    this.camera.position.set(this.focusX, this.cameraHeight, this.distance + pullback);
-    this.camera.lookAt(this.focusX, this.cameraHeight, 0);
-    // Only nearby fixtures need GPU lights and shadow maps as the camera travels.
-    for (const light of this.lights) {
-      const nearby = Math.abs(light.position.x - this.focusX) < ART_SPACING * 1.6;
-      if (light.visible !== nearby) {
-        light.visible = nearby;
-        this.renderer.shadowMap.needsUpdate = true;
-      }
-    }
+    const viewDirection = this.selected >= artworks.length - 2 ? -1 : 1;
+    const drifting = this.ready && !this.pan && !this.overview && this.loaded.has(this.selected) && !this.options.reducedMotion;
+    this.driftAmount = this.options.reducedMotion ? 0 : THREE.MathUtils.damp(this.driftAmount, drifting ? 1 : 0, 2.5, delta);
+    if (!document.hidden) this.driftTime += delta;
+    const driftX = Math.sin(this.driftTime * 0.55) * 0.022 * this.driftAmount;
+    const driftY = Math.sin(this.driftTime * 0.43) * 0.015 * this.driftAmount;
+    // Translate the camera and target together to keep the artwork straight-on.
+    this.camera.position.set(this.focusX - 0.16 + driftX, ART_HEIGHT - 0.12 + driftY, this.distance + arc * 0.08);
+    this.camera.lookAt(this.focusX + driftX + lookAhead + this.viewMix * 22 * viewDirection, ART_HEIGHT - 0.12 + driftY, lookZ + this.viewMix * this.distance);
+    for (const light of this.lights) light.visible = Math.abs(light.position.x - this.focusX) < SPACING * 1.1;
     this.renderer.render(this.scene, this.camera);
+    const { width, height } = paintingSize(artworks[this.selected]);
+    // Cancel the camera's idle translation when projecting HUD anchors.
+    // The painting drifts naturally while its information remains steady.
+    const left = new THREE.Vector3(artX(this.selected) - width / 2 + driftX, ART_HEIGHT + height / 2 + driftY, 0.08).project(this.camera);
+    const right = new THREE.Vector3(artX(this.selected) + width / 2 + driftX, ART_HEIGHT + driftY, 0.08).project(this.camera);
+    this.options.onFrame({ left: (left.x + 1) / 2 * this.host.clientWidth, right: (right.x + 1) / 2 * this.host.clientWidth, top: (1 - left.y) / 2 * this.host.clientHeight, moving: !!this.pan || this.viewMix > 0.01 || !this.loaded.has(this.selected) });
     this.renderer.domElement.dataset.artwork = String(this.selected);
     this.renderer.domElement.dataset.panning = String(!!this.pan);
-    if (this.pan) this.requestRender();
+    this.renderer.domElement.dataset.textures = String(this.loaded.size);
+    if (this.pan || this.viewMix !== targetMix || drifting || this.driftAmount > 0.001) this.requestRender();
   };
-
-  private visibilityChanged = () => {
-    if (!document.hidden) this.requestRender();
-  };
-
-  private contextLost = (event: Event) => {
-    event.preventDefault();
-    if (!this.disposed) this.options.onError();
-  };
+  private visibilityChanged = () => { if (!document.hidden) this.requestRender(); };
+  private contextLost = (event: Event) => { event.preventDefault(); if (!this.disposed) this.options.onError(); };
 
   dispose() {
     if (this.disposed) return;
@@ -339,15 +348,16 @@ export class GalleryRoom {
     this.observer.disconnect();
     document.removeEventListener("visibilitychange", this.visibilityChanged);
     this.renderer.domElement.removeEventListener("webglcontextlost", this.contextLost);
-    this.scene.traverse((object) => {
+    this.scene.traverse(object => {
       if (object instanceof THREE.Mesh) {
         object.geometry.dispose();
-        const materials = Array.isArray(object.material) ? object.material : [object.material];
-        materials.forEach((material) => material.dispose());
+        (Array.isArray(object.material) ? object.material : [object.material]).forEach(material => material.dispose());
       }
     });
-    this.textures.forEach((texture) => texture.dispose());
-    this.lights.forEach((light) => light.dispose());
+    this.textures.forEach(texture => texture.dispose());
+    this.loaded.forEach(texture => texture.dispose());
+    this.previews.forEach(texture => texture.dispose());
+    this.lights.forEach(light => light.dispose());
     this.renderer.dispose();
     this.renderer.forceContextLoss();
     this.renderer.domElement.remove();

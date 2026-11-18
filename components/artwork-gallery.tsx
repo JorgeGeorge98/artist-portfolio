@@ -25,20 +25,30 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
   const [selected, setSelected] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [viewerMode, setViewerMode] = useState<"image" | "gallery">("image");
+  const [soundOn, setSoundOn] = useState(false);
+  const galleryAudio = useRef<HTMLAudioElement | null>(null);
+  const audioAttempt = useRef(0);
+  const audioFade = useRef(0);
   const dialog = useRef<HTMLDialogElement>(null);
   const previousOverflow = useRef<string | null>(null);
   const artwork = artworks[selected];
 
   function openArtwork(index: number, mode: "image" | "gallery" = "image") {
+    if (mode === "gallery") startGalleryAudio();
     setSelected(index);
     setViewerMode(mode);
     setIsOpen(true);
     previousOverflow.current = document.body.style.overflow;
     dialog.current?.showModal();
-    document.body.style.overflow = "hidden";
+    document.body.style.setProperty("overflow", "hidden");
   }
 
   function restoreScroll() {
+    audioAttempt.current++;
+    cancelAnimationFrame(audioFade.current);
+    galleryAudio.current?.pause();
+    if (galleryAudio.current) galleryAudio.current.currentTime = 0;
+    setSoundOn(false);
     setIsOpen(false);
     if (previousOverflow.current !== null) {
       document.body.style.overflow = previousOverflow.current;
@@ -47,8 +57,54 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
   }
 
   useEffect(() => () => {
+    audioAttempt.current++;
+    cancelAnimationFrame(audioFade.current);
+    galleryAudio.current?.pause();
+    galleryAudio.current?.removeAttribute("src");
+    galleryAudio.current?.load();
     if (previousOverflow.current !== null) document.body.style.overflow = previousOverflow.current;
   }, []);
+
+  function startGalleryAudio() {
+    if (!galleryAudio.current) {
+      galleryAudio.current = new Audio("/Kalimba%20Relaxation%20Music.mp3");
+      galleryAudio.current.loop = true;
+      const audio = galleryAudio.current;
+      // Skip the silent opening on first playback and subsequent loops.
+      const skipIntro = () => { if (audio.currentTime < 3) audio.currentTime = 3; };
+      audio.addEventListener("loadedmetadata", skipIntro);
+      audio.addEventListener("timeupdate", skipIntro);
+    }
+    cancelAnimationFrame(audioFade.current);
+    const audio = galleryAudio.current;
+    audio.volume = 0;
+    if (audio.currentTime < 3) audio.currentTime = 3;
+    const attempt = ++audioAttempt.current;
+    // Called directly from the entry/toggle gesture so mobile browsers allow playback.
+    void audio.play().then(() => {
+      if (attempt !== audioAttempt.current) return;
+      setSoundOn(true);
+      const started = performance.now();
+      const fade = (now: number) => {
+        if (attempt !== audioAttempt.current || audio.paused) return;
+        const progress = Math.max(0, Math.min(1, (now - started) / 1500));
+        audio.volume = 0.18 * progress;
+        if (progress < 1) audioFade.current = requestAnimationFrame(fade);
+      };
+      audioFade.current = requestAnimationFrame(fade);
+    }).catch(() => {
+      if (attempt === audioAttempt.current) setSoundOn(false);
+    });
+  }
+
+  function toggleGalleryAudio() {
+    if (galleryAudio.current && !galleryAudio.current.paused) {
+      audioAttempt.current++;
+      cancelAnimationFrame(audioFade.current);
+      galleryAudio.current.pause();
+      setSoundOn(false);
+    } else startGalleryAudio();
+  }
 
   function navigate(direction: number) {
     setSelected((current) => (current + direction + artworks.length) % artworks.length);
@@ -90,7 +146,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
         </Reveal>}
       </div>}
 
-      <dialog ref={dialog} className={`artwork-dialog ${viewerMode === "image" ? "editorial-viewer" : ""}`} aria-labelledby="artwork-title" aria-describedby="artwork-description" onClose={restoreScroll} onClick={(event) => { if (event.target === event.currentTarget) dialog.current?.close(); }} onKeyDown={(event) => {
+      <dialog ref={dialog} className={`artwork-dialog ${viewerMode === "image" ? "editorial-viewer" : "cinematic-gallery"}`} aria-labelledby="artwork-title" aria-describedby="artwork-description" onClose={restoreScroll} onClick={(event) => { if (event.target === event.currentTarget) dialog.current?.close(); }} onKeyDown={(event) => {
         if (event.key === "ArrowRight" || event.key === "ArrowLeft") {
           event.preventDefault();
           navigate(event.key === "ArrowRight" ? 1 : -1);
@@ -102,7 +158,7 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
             <button className="text-link flex min-h-11 items-center gap-3 text-sm" onClick={() => dialog.current?.close()} aria-label={t("Cerrar el visor de obras")}>{t("Cerrar")} <span className="text-2xl font-light" aria-hidden="true">×</span></button>
           </div>
           <div className="viewer-image py-5">
-            {isOpen && (viewerMode === "gallery" ? <GalleryScene selected={selected} /> : (
+            {isOpen && (viewerMode === "gallery" ? <GalleryScene selected={selected} soundOn={soundOn} onToggleSound={toggleGalleryAudio} onNavigate={navigate} onInquire={() => { dialog.current?.close(); restoreScroll(); }} /> : (
               <div className="artwork-editorial" key={artwork.src}>
                 <div className="artwork-title-rail">
                   <p className="eyebrow text-muted mb-4">Daniela Salem</p>
@@ -119,20 +175,15 @@ export function ArtworkGallery({ catalogue = false, ribbon = false }: { catalogu
               </div>
             ))}
           </div>
-          <div className="viewer-details flex items-start justify-between gap-5 border-t border-line pt-5">
+          {viewerMode === "image" && <div className="viewer-details flex items-start justify-between gap-5 border-t border-line pt-5">
             <div className="min-w-0 max-w-170" aria-live="polite" aria-atomic="true">
-              {viewerMode === "gallery" && <p className="eyebrow mb-2 text-muted">{String(selected + 1).padStart(2, "0")} / {String(artworks.length).padStart(2, "0")}</p>}
-              {viewerMode === "gallery" ? <PaintedText as="h2" id="artwork-title" className="font-display text-3xl sm:text-4xl">{artwork.title}</PaintedText> : <p className="eyebrow text-muted">{t("Sobre la obra")}</p>}
+              <p className="eyebrow text-muted">{t("Sobre la obra")}</p>
               <p className="mt-2 text-xs text-muted">{t("Acrílico")}</p>
               <ArtworkPrice artwork={artwork} />
-              {viewerMode === "gallery" && !artwork.sold && <a href={path("/#contact")} className="text-link mt-4 inline-flex min-h-11 items-center gap-5 border-b border-ink pb-1 text-sm" onClick={() => { dialog.current?.close(); restoreScroll(); }}>
-                {t("Consultar")} <Arrow diagonal />
-              </a>}
               <p id="artwork-description" className="mt-3 text-sm leading-7 text-muted whitespace-pre-line">{artwork.description}</p>
-              {viewerMode === "gallery" && <p className="mt-3 text-xs tracking-wide text-muted">{artwork.dimensions}{artwork.year && <> · {artwork.year}</>}</p>}
             </div>
             <div className="flex gap-2"><button className="viewer-control" onClick={() => navigate(-1)} aria-label={t("Obra anterior")}><Arrow className="rotate-180" /></button><button className="viewer-control" onClick={() => navigate(1)} aria-label={t("Obra siguiente")}><Arrow /></button></div>
-          </div>
+          </div>}
         </div>
       </dialog>
     </>

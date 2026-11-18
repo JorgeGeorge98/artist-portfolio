@@ -111,6 +111,7 @@ export const english: Record<string, string> = {
   "Daniela Salem junto a sus pinturas": "Daniela Salem alongside her paintings",
   "Bienvenida a Daniela Salem": "Welcome to Daniela Salem",
   "Pintura contemporánea": "Contemporary painting",
+  "Desarrollado y Diseñado por": "Designed & Developed by",
   "Un mundo de color.": "A world of colour.",
   "Daniela Salem, inicio": "Daniela Salem, home",
   "Navegación principal": "Main navigation",

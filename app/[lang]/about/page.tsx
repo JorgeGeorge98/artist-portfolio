@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/seo";
 import { getTranslator, localizePath, type Locale } from "@/lib/i18n";
 import { PaintedText } from "@/components/painted-text";
 import { SiteFooter } from "@/components/site-footer";
@@ -108,5 +109,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
  const { lang } = await params;
  const title = lang === "en" ? "About — Daniela Salem" : "Sobre mí — Daniela Salem";
  const description = lang === "en" ? "Daniela Salem's artistic practice: body, colour and introspection. Discover her creative process and her journey between Venezuela and Spain." : "La práctica artística de Daniela Salem: cuerpo, color e introspección. Conoce su proceso creativo y su trayectoria entre Venezuela y España.";
- return { title, description, openGraph: { title, description, locale: lang === "en" ? "en_GB" : "es_ES" }, alternates: { languages: { es: "/about", en: "/en/about", "x-default": "/about" } } };
+ return pageMetadata(lang, "/about", title, description);
 }

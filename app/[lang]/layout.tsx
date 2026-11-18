@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { LocaleProvider } from "@/components/locale-provider";
 import { isLocale } from "@/lib/i18n";
 import { siteUrl } from "@/lib/site-url";
+import { contact } from "@/content/contact";
 
 const sans = localFont({
   src: "../../public/fonts/dm-sans.ttf",
@@ -59,7 +60,16 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[la
       lang={lang}
       className={`${sans.variable} ${display.variable} antialiased`}
     >
-      <body><LocaleProvider locale={lang}>{children}</LocaleProvider></body>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@graph": [
+            { "@type": "Person", "@id": `${siteUrl.href}#artist`, name: "Daniela Salem", url: siteUrl.href, jobTitle: lang === "en" ? "Contemporary painter" : "Pintora contemporánea", email: contact.email, sameAs: [contact.instagramHref] },
+            { "@type": "WebSite", "@id": `${siteUrl.href}#website`, url: siteUrl.href, name: "Daniela Salem", inLanguage: ["es", "en"], publisher: { "@id": `${siteUrl.href}#artist` } },
+          ],
+        }).replace(/</g, "\\u003c") }} />
+        <LocaleProvider locale={lang}>{children}</LocaleProvider>
+      </body>
     </html>
   );
 }

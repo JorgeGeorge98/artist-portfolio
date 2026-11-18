@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/seo";
 import { getTranslator, type Locale } from "@/lib/i18n";
 import { PaintedText } from "@/components/painted-text";
 import { SiteFooter } from "@/components/site-footer";
@@ -34,5 +35,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
  const { lang } = await params;
  const title = lang === "en" ? "Collection — Daniela Salem" : "Colección — Daniela Salem";
  const description = lang === "en" ? "Discover Daniela Salem's paintings, explore the collection and step into an immersive virtual gallery." : "Descubre las pinturas de Daniela Salem, explora la colección y adéntrate en una galería virtual inmersiva.";
- return { title, description, openGraph: { title, description, locale: lang === "en" ? "en_GB" : "es_ES" }, alternates: { languages: { es: "/gallery", en: "/en/gallery", "x-default": "/gallery" } } };
+ return pageMetadata(lang, "/gallery", title, description);
 }

@@ -40,11 +40,13 @@ For manual dashboard deployment, build locally and upload the contents of `out/`
 Attach the final domain in the Pages project's Custom domains settings after
 checking the preview deployment. This repository preparation does not publish it.
 
-Set the build environment variable `SITE_URL` to the full production URL (including
-`https://`) for absolute Spanish/English SEO alternate links. Rebuild after changing
-the domain. Without it, builds use `CF_PAGES_URL` on Cloudflare, the Vercel production
-URL on Vercel, or localhost for local development. Set `SITE_URL` for local builds
-intended for manual upload too.
+The canonical production domain is `https://danielasalem.art/`, defined in
+`lib/site-url.ts`. Canonical URLs, language alternates, social metadata and the
+sitemap always use this domain, including preview builds. No `SITE_URL` variable
+is needed. The build exports `/sitemap.xml` and `/robots.txt` automatically.
+After deployment, submit `https://danielasalem.art/sitemap.xml` in Google Search
+Console. If the social artwork changes, regenerate it with
+`node scripts/prepare-social-preview.mjs` before rebuilding.
 
 ## Routes and languages
 

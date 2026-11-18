@@ -1,3 +1,4 @@
+import { pageMetadata } from "@/lib/seo";
 import type { Metadata } from "next";
 import { getTranslator, localizePath, type Locale } from "@/lib/i18n";
 import { PaintedText } from "@/components/painted-text";
@@ -57,7 +58,7 @@ export default async function Home({ params }: { params: Promise<{ lang: Locale 
             <p className="eyebrow mb-8 text-muted">{t("03 / Hablemos")}</p>
             <div className="flex flex-col justify-between gap-10 md:flex-row md:items-end">
               <PaintedText as="h2" id="contact-title" className="contact-title font-display">{t("¿Algo ha")}<br />{t("captado tu")} <em>{t("mirada?")}</em></PaintedText>
-              <div className="min-w-0 pb-2 md:max-w-90"><p className="mb-6 text-sm leading-7 text-muted">{t("Para consultar sobre las obras,")}<br />{t("colaborar o simplemente saludar.")}</p><a className="text-link inline-flex min-h-11 max-w-full items-center gap-3 border-b border-ink pb-2 text-sm sm:text-base" href={contact.emailHref}><span className="break-all">{contact.email}</span><Arrow diagonal className="shrink-0" /></a><a className="text-link mt-4 flex min-h-11 items-center gap-3 text-sm" href={contact.instagramHref} target="_blank" rel="noopener noreferrer" aria-label={t("Instagram de Daniela Salem: @artdsalem, se abre en una nueva pestaña")}>Instagram / {contact.instagram} <Arrow diagonal className="!h-3 !w-3" /></a><a className="text-link mt-2 flex min-h-11 items-center gap-3 text-sm" href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={t("Contactar por WhatsApp")}>WhatsApp / {contact.whatsapp} <Arrow diagonal className="!h-3 !w-3" /></a></div>
+              <div className="min-w-0 pb-2 md:max-w-90"><p className="mb-6 text-sm leading-7 text-muted">{t("Para consultar sobre las obras o")}<br />{t("colaborar:")}</p><a className="text-link inline-flex min-h-11 max-w-full items-center gap-3 border-b border-ink pb-2 text-sm sm:text-base" href={contact.emailHref}><span className="break-all">{contact.email}</span><Arrow diagonal className="shrink-0" /></a><a className="text-link mt-4 flex min-h-11 items-center gap-3 text-sm" href={contact.instagramHref} target="_blank" rel="noopener noreferrer" aria-label={t("Instagram de Daniela Salem: @artdsalem, se abre en una nueva pestaña")}>Instagram / {contact.instagram} <Arrow diagonal className="!h-3 !w-3" /></a><a className="text-link mt-2 flex min-h-11 items-center gap-3 text-sm" href={contact.whatsappHref} target="_blank" rel="noopener noreferrer" aria-label={t("Contactar por WhatsApp")}>WhatsApp / {contact.whatsapp} <Arrow diagonal className="!h-3 !w-3" /></a></div>
             </div>
           </Reveal>
         </section>
@@ -72,5 +73,5 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: Loc
  const { lang } = await params;
  const title = lang === "en" ? "Daniela Salem — Contemporary painting" : "Daniela Salem — Pintura contemporánea";
  const description = lang === "en" ? "Explore Daniela Salem's paintings: a world of expressive colour, intuitive gestures and unexpected ways of seeing." : "Explora las pinturas de Daniela Salem: un mundo de color expresivo, gestos intuitivos y formas inesperadas de mirar.";
- return { title, description, openGraph: { title, description, locale: lang === "en" ? "en_GB" : "es_ES" }, alternates: { languages: { es: "/", en: "/en", "x-default": "/" } } };
+ return pageMetadata(lang, "/", title, description);
 }

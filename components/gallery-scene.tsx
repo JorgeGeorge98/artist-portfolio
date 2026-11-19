@@ -103,16 +103,21 @@ export function GalleryScene({ selected, soundOn, onToggleSound, onNavigate, onI
     };
   }, [locale]);
 
-  return (
-    <div ref={scene} className="gallery-scene" data-state={status} data-overview={overview}>
+  const soundToggle = (
       <button className="gallery-sound text-link" onClick={onToggleSound} aria-pressed={soundOn} aria-label={locale === "en" ? (soundOn ? "Mute gallery music" : "Play gallery music") : (soundOn ? "Silenciar música de la galería" : "Activar música de la galería")}>
         <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z" />{soundOn ? <><path d="M15 8a6 6 0 0 1 0 8" /><path d="M18 5a10 10 0 0 1 0 14" /></> : <path d="m16 9 6 6m0-6-6 6" />}</svg>
         <span>{locale === "en" ? `Sound ${soundOn ? "on" : "off"}` : `Sonido ${soundOn ? "activado" : "desactivado"}`}</span>
       </button>
+  );
+
+  return (
+    <div ref={scene} className="gallery-scene" data-state={status} data-overview={overview}>
+      <div className="gallery-sound-desktop">{soundToggle}</div>
       <div ref={host} className="gallery-render" role="img" aria-label={locale === "en" ? `Gallery room with ${artwork.title} under a spotlight. ${artwork.alt}` : `Sala de exposición con ${artwork.title} bajo un foco. ${artwork.alt}`} />
       {status === "loading" && <div className="gallery-loading" role="status"><span className="gallery-loading-mark" aria-hidden="true" /><p className="eyebrow">{t("Abriendo la galería")}</p></div>}
       <div ref={hud} className="gallery-hud" aria-live="polite" aria-atomic="true">
         <div className="gallery-hud-identity" key={`identity-${selected}`}>
+          <div className="gallery-sound-mobile">{soundToggle}</div>
           <p className="eyebrow gallery-hud-kicker">Daniela Salem / {t("La colección")}</p>
           <GalleryTitle title={artwork.title} />
           <dl className="gallery-hud-facts">

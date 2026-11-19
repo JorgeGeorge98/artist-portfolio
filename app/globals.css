@@ -313,7 +313,12 @@ a, button { touch-action: manipulation; }
 .gallery-overview { min-height: 44px; padding: 8px 14px; font-size: 12px; background: #fffaf2e8; }
 .gallery-loading { z-index: 3; }
 .gallery-sound { position: absolute; top: 84px; right: 32px; z-index: 5; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; background: #fffaf2d9; color: #24454a; font-size: 11px; }
-@media (max-width: 899px), (max-aspect-ratio: 1/1) { .gallery-sound { top: 64px; right: 16px; } }
+.gallery-sound-mobile { display: none; }
+@media (max-width: 899px), (max-aspect-ratio: 1/1) {
+  .gallery-sound-desktop { display: none; }
+  .gallery-sound-mobile { display: flex; justify-content: flex-end; margin-bottom: 10px; }
+  .gallery-sound-mobile .gallery-sound { position: static; background: transparent; padding: 0 4px; }
+}
 .gallery-scene[data-state="fallback"] .gallery-fallback { inset: 80px 30% 100px; background: transparent; }
 .gallery-scene[data-state="fallback"] .gallery-hud-identity { left: 28px; right: auto; }
 .gallery-scene[data-state="fallback"] .gallery-hud-story { right: 28px; left: auto; }

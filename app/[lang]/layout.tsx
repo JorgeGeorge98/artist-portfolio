@@ -31,7 +31,11 @@ const spanishMetadata: Metadata = {
     type: "website",
     locale: "es_ES",
   },
-  icons: { icon: "/icon.svg" },
+  icons: {
+    icon: [{ url: "/favicon-96.png", type: "image/png", sizes: "96x96" }],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export function generateStaticParams() {
@@ -48,7 +52,11 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     title: "Daniela Salem — Contemporary painting",
     description: "Explore Daniela Salem's paintings: a world of expressive colour, intuitive gestures and unexpected ways of seeing.",
     openGraph: { title: "Daniela Salem — Between emotion and colour", description: "Discover a collection of works by contemporary painter Daniela Salem.", type: "website", locale: "en_GB" },
-    icons: { icon: "/icon.svg" },
+    icons: {
+      icon: [{ url: "/favicon-96.png", type: "image/png", sizes: "96x96" }],
+      shortcut: "/favicon.ico",
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    },
   };
 }
 
